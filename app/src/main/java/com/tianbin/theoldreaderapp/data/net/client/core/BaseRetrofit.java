@@ -6,14 +6,17 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Created by mingjun on 16/7/20.
+ * base retrofit
+ * Created by tianbin on 16/11/2.
  */
 public abstract class BaseRetrofit {
+
+    protected static final String END_POINT = "https://theoldreader.com/";
 
     public Retrofit get() {
         Retrofit.Builder builder = new Retrofit.Builder();
 
-        builder.baseUrl(getApiEndpoint().getEndpoint())
+        builder.baseUrl(END_POINT)
                 .client(getHttpClient())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create());
@@ -21,7 +24,6 @@ public abstract class BaseRetrofit {
         return builder.build();
     }
 
-    public abstract ApiEndpoint getApiEndpoint();
     public abstract OkHttpClient getHttpClient();
 
 }

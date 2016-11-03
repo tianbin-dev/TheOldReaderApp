@@ -29,8 +29,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tianbin.theoldreaderapp.R;
+import com.tianbin.theoldreaderapp.contract.account.LoginContract;
 import com.tianbin.theoldreaderapp.presenter.account.LoginPresenter;
-import com.tianbin.theoldreaderapp.ui.module.account.LoginView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, LoginView {
+public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, LoginContract.View {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -299,7 +299,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     public void loginSuccess() {
         finish();
-        ShowSubscriptionsActivity.start(this);
+        MainActivity.start(this);
     }
 
     @Override

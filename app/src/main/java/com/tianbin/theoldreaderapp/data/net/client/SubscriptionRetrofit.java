@@ -6,13 +6,15 @@ import com.tianbin.theoldreaderapp.data.net.client.core.BaseRetrofit;
 import okhttp3.OkHttpClient;
 
 /**
- * account retrofit
- * Created by tianbin on 16/10/29.
+ * Created by tianbin on 16/11/3.
  */
-public class AccountRetrofit extends BaseRetrofit {
+
+public class SubscriptionRetrofit extends BaseRetrofit{
 
     @Override
     public OkHttpClient getHttpClient() {
         return new BaseOkHttpClient().get();
     }
+
+
 }
