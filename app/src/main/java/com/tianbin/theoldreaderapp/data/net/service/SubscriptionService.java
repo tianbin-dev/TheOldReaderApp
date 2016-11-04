@@ -1,5 +1,6 @@
 package com.tianbin.theoldreaderapp.data.net.service;
 
+import com.tianbin.theoldreaderapp.data.module.BlogList;
 import com.tianbin.theoldreaderapp.data.module.SubscriptionList;
 
 import retrofit2.http.GET;
@@ -13,4 +14,7 @@ public interface SubscriptionService {
 
     @GET("/reader/api/0/subscription/list")
     Observable<SubscriptionList> getSubscriptionList();
+
+    @GET("/reader/api/0/stream/contents")
+    Observable<BlogList> getBlogList();
 }

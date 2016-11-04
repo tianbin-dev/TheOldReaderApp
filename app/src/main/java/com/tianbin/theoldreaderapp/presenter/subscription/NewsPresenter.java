@@ -1,7 +1,7 @@
 package com.tianbin.theoldreaderapp.presenter.subscription;
 
 import com.tianbin.theoldreaderapp.contract.subscription.NewsContract;
-import com.tianbin.theoldreaderapp.data.module.SubscriptionList;
+import com.tianbin.theoldreaderapp.data.module.BlogList;
 import com.tianbin.theoldreaderapp.data.net.SubscriptionDataSource;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -15,11 +15,6 @@ import rx.schedulers.Schedulers;
 public class NewsPresenter implements NewsContract.Presenter {
 
     private NewsContract.View mView;
-    private SubscriptionDataSource mSubscriptionDataSource;
-
-    public NewsPresenter() {
-        mSubscriptionDataSource = new SubscriptionDataSource();
-    }
 
     @Override
     public void attachView(NewsContract.View view) {
@@ -32,14 +27,20 @@ public class NewsPresenter implements NewsContract.Presenter {
     }
 
     @Override
-    public void fetchNews() {
-        mSubscriptionDataSource.getSubscriptionList()
+    public void fetchNews(long continuation) {
+        SubscriptionDataSource.getInstance()
+                .getBlogList(continuation)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<SubscriptionList>() {
+                .subscribe(new Action1<BlogList>() {
                     @Override
-                    public void call(SubscriptionList subscriptionList) {
-                        subscriptionList.getSubscriptions();
+                    public void call(BlogList blogList) {
+                        mView.fetchNewsSuccess(blogList.getItems());
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        mView.fetchNewsFailed();
                     }
                 });
     }

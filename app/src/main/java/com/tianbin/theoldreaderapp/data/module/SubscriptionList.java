@@ -10,29 +10,18 @@ import java.util.List;
  */
 public class SubscriptionList {
 
-    /**
-     * id : feed/581442bbc70bc24d130005ca
-     * title : #androiduiux
-     * categories : [{"id":"user/-/label/android","label":"android"}]
-     * sortid : 581442bbc70bc24d130005ca
-     * firstitemmsec : 1460302439000
-     * url : https://androiduiux.com/feed/
-     * htmlUrl : https://androiduiux.com
-     * iconUrl : //s.theoldreader.com/system/uploads/feed/picture/0066/6225/2a3f/49ff/b825/icon_1ee2.ico
-     */
-
     @SerializedName("subscriptions")
-    private List<SubscriptionsEntity> mSubscriptions;
+    private List<Entity> mSubscriptions;
 
-    public List<SubscriptionsEntity> getSubscriptions() {
+    public List<Entity> getSubscriptions() {
         return mSubscriptions;
     }
 
-    public void setSubscriptions(List<SubscriptionsEntity> subscriptions) {
+    public void setSubscriptions(List<Entity> subscriptions) {
         mSubscriptions = subscriptions;
     }
 
-    public static class SubscriptionsEntity {
+    public static class Entity {
         @SerializedName("id")
         private String mId;
         @SerializedName("title")
@@ -47,11 +36,6 @@ public class SubscriptionList {
         private String mHtmlUrl;
         @SerializedName("iconUrl")
         private String mIconUrl;
-        /**
-         * id : user/-/label/android
-         * label : android
-         */
-
         @SerializedName("categories")
         private List<CategoriesEntity> mCategories;
 

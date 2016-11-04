@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.tianbin.theoldreaderapp.ui.activity.MainActivity"
+    tools:context="com.tianbin.theoldreaderapp.ui.module.main.MainActivity"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.design.widget.BottomNavigationView

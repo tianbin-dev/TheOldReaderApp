@@ -1,4 +1,4 @@
-package com.tianbin.theoldreaderapp.ui.activity;
+package com.tianbin.theoldreaderapp.ui.module.main;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.tianbin.theoldreaderapp.R;
-import com.tianbin.theoldreaderapp.ui.fragment.NewsFragment;
+import com.tianbin.theoldreaderapp.ui.module.account.FavouriteFragment;
+import com.tianbin.theoldreaderapp.ui.module.account.ProfileFragment;
+import com.tianbin.theoldreaderapp.ui.module.subscription.NewsFragment;
+import com.tianbin.theoldreaderapp.ui.module.subscription.SubscriptionsFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_subscriptions);
+        setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
         initBottomNavigationView();
@@ -43,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switchMenu(getFragmentName(item.getItemId()));
-                        return false;
+                        return true;
                     }
                 });
     }
@@ -75,11 +78,11 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_news_list:
                 return NewsFragment.class.getName();
             case R.id.action_subscription_list:
-                return null;
+                return SubscriptionsFragment.class.getName();
             case R.id.action_fav_list:
-                return null;
+                return FavouriteFragment.class.getName();
             case R.id.action_profile:
-                return null;
+                return ProfileFragment.class.getName();
             default:
                 return null;
         }

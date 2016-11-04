@@ -1,4 +1,4 @@
-package com.tianbin.theoldreaderapp.ui.activity;
+package com.tianbin.theoldreaderapp.ui.module.main;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
