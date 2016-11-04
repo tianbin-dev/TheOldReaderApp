@@ -6,12 +6,16 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.FrameLayout.LayoutParams;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.tianbin.theoldreaderapp.R;
+import com.tianbin.theoldreaderapp.common.wrapper.AppLog;
 import com.tianbin.theoldreaderapp.contract.subscription.NewsContract;
 import com.tianbin.theoldreaderapp.data.module.BlogList;
 import com.tianbin.theoldreaderapp.presenter.subscription.NewsPresenter;
@@ -33,7 +37,7 @@ public class NewsFragment extends BaseFragment implements NewsContract.View, Swi
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private NewsPresenter mNewsPresenter;
+    private NewsContract.Presenter mNewsPresenter;
     private BaseQuickAdapter mNewsAdapter;
 
     @Override
@@ -52,12 +56,33 @@ public class NewsFragment extends BaseFragment implements NewsContract.View, Swi
         initAdapter();
         initRecyclerView();
 
-        mNewsPresenter.fetchNews(-1);
+        mNewsPresenter.fetchNews();
         mSwipeRefreshLayout.setRefreshing(true);
     }
 
     private void initAdapter() {
         mNewsAdapter = new NewsAdapter();
+        mNewsAdapter.openLoadMore(20);
+        mNewsAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                AppLog.d("load more request");
+                mNewsPresenter.loadMoreNews();
+            }
+        });
+        addLoadingView();
+    }
+
+    private void addLoadingView() {
+        TextView textView = new TextView(getContext());
+        textView.setText("loading ...");
+        textView.setTextSize(14);
+        textView.setTextColor(getResources().getColor(R.color.colorAccent));
+        textView.setGravity(Gravity.CENTER);
+        int viewHeight = getResources().getDimensionPixelSize(R.dimen.loading_view_height);
+        LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, viewHeight);
+        textView.setLayoutParams(layoutParams);
+        mNewsAdapter.setLoadingView(textView);
     }
 
     private void initRecyclerView() {
@@ -81,13 +106,14 @@ public class NewsFragment extends BaseFragment implements NewsContract.View, Swi
 
     @Override
     public void onRefresh() {
-        if (mNewsPresenter != null) {
-            mNewsPresenter.fetchNews(-1);
+        if (mNewsPresenter != null && !mNewsAdapter.isLoading()) {
+            mNewsPresenter.fetchNews();
         }
     }
 
     @Override
     public void fetchNewsSuccess(List<BlogList.ItemsEntity> blogList) {
+        AppLog.d("fetch news success");
         if (mNewsAdapter != null) {
             mNewsAdapter.setNewData(blogList);
             mNewsAdapter.notifyDataSetChanged();
@@ -98,11 +124,32 @@ public class NewsFragment extends BaseFragment implements NewsContract.View, Swi
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         }
-        Toast.makeText(getContext(), "fetch success", Toast.LENGTH_LONG);
     }
 
     @Override
-    public void fetchNewsFailed() {
-        Toast.makeText(getContext(), "fetch failed", Toast.LENGTH_LONG);
+    public void fetchNewsFailed(Throwable throwable) {
+        AppLog.d("fetch news failed ---" + throwable.toString());
+        mNewsAdapter.showLoadMoreFailedView();
+    }
+
+    @Override
+    public void loadMoreNewsSuccess(List<BlogList.ItemsEntity> blogList) {
+        AppLog.d("load more request success");
+        if (mNewsAdapter != null) {
+            mNewsAdapter.addData(blogList);
+        }
+    }
+
+    @Override
+    public void loadMoreNewsCompleted() {
+        AppLog.d("load more request completed");
+        mNewsAdapter.loadComplete();
+        Toast.makeText(getContext(), "no more data", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void loadMoreNewsFailed(Throwable throwable) {
+        AppLog.d("load more request failed ---" + throwable.toString());
+        mNewsAdapter.showLoadMoreFailedView();
     }
 }

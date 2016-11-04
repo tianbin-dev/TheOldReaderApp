@@ -67,4 +67,9 @@ dependencies {
 
     // https://github.com/laobie/StatusBarUtil
     compile 'com.jaeger.statusbaruitl:library:1.2.8'
+
+    // Logger
+    // https://github.com/orhanobut/logger
+    compile 'com.orhanobut:logger:1.14'
+
 }

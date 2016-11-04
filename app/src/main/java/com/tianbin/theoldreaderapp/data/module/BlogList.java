@@ -23,7 +23,7 @@ public class BlogList {
     @SerializedName("updated")
     private int mUpdated;
     @SerializedName("continuation")
-    private String mContinuation;
+    private long mContinuation;
     @SerializedName("items")
     private List<ItemsEntity> mItems;
 
@@ -75,11 +75,11 @@ public class BlogList {
         mUpdated = updated;
     }
 
-    public String getContinuation() {
+    public long getContinuation() {
         return mContinuation;
     }
 
-    public void setContinuation(String continuation) {
+    public void setContinuation(long continuation) {
         mContinuation = continuation;
     }
 

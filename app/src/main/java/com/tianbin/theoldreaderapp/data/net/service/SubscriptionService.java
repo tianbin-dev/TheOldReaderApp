@@ -4,6 +4,7 @@ import com.tianbin.theoldreaderapp.data.module.BlogList;
 import com.tianbin.theoldreaderapp.data.module.SubscriptionList;
 
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -16,5 +17,5 @@ public interface SubscriptionService {
     Observable<SubscriptionList> getSubscriptionList();
 
     @GET("/reader/api/0/stream/contents")
-    Observable<BlogList> getBlogList();
+    Observable<BlogList> getBlogList(@Query("c") long continuation);
 }

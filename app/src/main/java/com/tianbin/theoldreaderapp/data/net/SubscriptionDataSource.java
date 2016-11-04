@@ -36,6 +36,6 @@ public class SubscriptionDataSource implements SubscriptionApi {
 
     @Override
     public Observable<BlogList> getBlogList(long continuation) {
-        return mSubscriptionService.getBlogList();
+        return mSubscriptionService.getBlogList(continuation);
     }
 }
