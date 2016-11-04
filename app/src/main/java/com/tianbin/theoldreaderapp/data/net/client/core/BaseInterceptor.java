@@ -33,17 +33,17 @@ public class BaseInterceptor implements Interceptor {
         if (!TextUtils.isEmpty(token)) {
             requestBuilder.header("Authorization", "GoogleLogin auth=" + token);
         }
-        Request request = addDefaultParameter(requestBuilder.build(), "&output=json");
+        Request request = addDefaultParameter(requestBuilder.build());
         return chain.proceed(request);
     }
 
-    protected Request addDefaultParameter(Request request, String parameter)
+    protected Request addDefaultParameter(Request request)
             throws IOException {
         Request.Builder builder;
         if (request.method().equals("GET")) {
             builder = appendDefaultParameterToUrl(request);
         } else {
-            builder = addDefaultParameterToBody(request, parameter);
+            builder = addDefaultParameterToBody(request);
         }
         return builder.build();
     }
@@ -58,18 +58,17 @@ public class BaseInterceptor implements Interceptor {
         return builder;
     }
 
-    private Request.Builder addDefaultParameterToBody(Request request, String parameter) throws IOException {
+    private Request.Builder addDefaultParameterToBody(Request request) throws IOException {
         Request.Builder builder;
         RequestBody newRequestBody;
         if (request.body() != null) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             Sink sink = Okio.sink(baos);
             BufferedSink bufferedSink = Okio.buffer(sink);
-
             // Write old params
             request.body().writeTo(bufferedSink);
             // write to buffer additional params
-            bufferedSink.writeString(parameter, Charset.defaultCharset());
+            bufferedSink.writeString("&output=json", Charset.defaultCharset());
             newRequestBody = RequestBody.create(
                     request.body().contentType(),
                     bufferedSink.buffer().readUtf8());
