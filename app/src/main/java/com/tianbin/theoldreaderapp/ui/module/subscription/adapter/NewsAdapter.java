@@ -17,7 +17,8 @@ public class NewsAdapter extends BaseQuickAdapter<BlogList.ItemsEntity> {
 
     @Override
     protected void convert(BaseViewHolder baseViewHolder, BlogList.ItemsEntity itemsEntity) {
-        baseViewHolder.setText(R.id.tv_title, itemsEntity.getTitle());
-        baseViewHolder.setText(R.id.tv_origin_title, itemsEntity.getOrigin().getTitle());
+        baseViewHolder.setText(R.id.tv_title, itemsEntity.getTitle())
+                .setText(R.id.tv_origin_title, itemsEntity.getOrigin().getTitle())
+                .addOnClickListener(R.id.ll_blog_holder_root);
     }
 }

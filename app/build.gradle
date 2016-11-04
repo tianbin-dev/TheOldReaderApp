@@ -64,4 +64,7 @@ dependencies {
     // recycler quick adapter
     // https://github.com/CymChad/BaseRecyclerViewAdapterHelper
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.1.5'
+
+    // https://github.com/laobie/StatusBarUtil
+    compile 'com.jaeger.statusbaruitl:library:1.2.8'
 }

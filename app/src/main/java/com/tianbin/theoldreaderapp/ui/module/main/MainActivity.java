@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     }
                 });
+        switchMenu(NewsFragment.class.getName());
     }
 
     private Fragment mCurrentFragment;

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.tianbin.theoldreaderapp.R;
 import com.tianbin.theoldreaderapp.contract.subscription.NewsContract;
 import com.tianbin.theoldreaderapp.data.module.BlogList;
@@ -67,6 +68,15 @@ public class NewsFragment extends BaseFragment implements NewsContract.View, Swi
         mNewsRecyclerView.addItemDecoration(dividerItemDecoration);
         mNewsRecyclerView.setAdapter(mNewsAdapter);
         mNewsRecyclerView.setClipToPadding(false);
+
+        mNewsRecyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
+            @Override
+            public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int position) {
+                NewsAdapter newsAdapter = (NewsAdapter) baseQuickAdapter;
+                String href = newsAdapter.getData().get(position).getCanonical().get(0).getHref();
+                DetailFragment.start(view.getContext(), href);
+            }
+        });
     }
 
     @Override
