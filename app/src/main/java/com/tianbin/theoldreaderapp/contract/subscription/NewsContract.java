@@ -22,13 +22,19 @@ public interface NewsContract {
 
         void loadMoreNewsCompleted();
 
-        void loadMoreNewsFailed(Throwable throwable);
+        void pullDownRefreshSuccess(List<BlogList.ItemsEntity> newDataList);
+
+        List<BlogList.ItemsEntity> getData();
     }
 
     interface Presenter extends MvpPresenter<View> {
 
-        void fetchNews();
+        void fetchNews(FetchType type);
+    }
 
-        void loadMoreNews();
+    enum FetchType {
+        INIT,
+        LOAD_MORE,
+        REFRESH
     }
 }

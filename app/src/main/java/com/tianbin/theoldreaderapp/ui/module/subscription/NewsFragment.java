@@ -56,7 +56,7 @@ public class NewsFragment extends BaseFragment implements NewsContract.View, Swi
         initAdapter();
         initRecyclerView();
 
-        mNewsPresenter.fetchNews();
+        mNewsPresenter.fetchNews(NewsContract.FetchType.INIT);
         mSwipeRefreshLayout.setRefreshing(true);
     }
 
@@ -67,7 +67,7 @@ public class NewsFragment extends BaseFragment implements NewsContract.View, Swi
             @Override
             public void onLoadMoreRequested() {
                 AppLog.d("load more request");
-                mNewsPresenter.loadMoreNews();
+                mNewsPresenter.fetchNews(NewsContract.FetchType.LOAD_MORE);
             }
         });
         addLoadingView();
@@ -107,7 +107,7 @@ public class NewsFragment extends BaseFragment implements NewsContract.View, Swi
     @Override
     public void onRefresh() {
         if (mNewsPresenter != null && !mNewsAdapter.isLoading()) {
-            mNewsPresenter.fetchNews();
+            mNewsPresenter.fetchNews(NewsContract.FetchType.REFRESH);
         }
     }
 
@@ -118,6 +118,10 @@ public class NewsFragment extends BaseFragment implements NewsContract.View, Swi
             mNewsAdapter.setNewData(blogList);
             mNewsAdapter.notifyDataSetChanged();
         }
+        dismissSwipeRefreshLayout();
+    }
+
+    private void dismissSwipeRefreshLayout() {
         if (mSwipeRefreshLayout != null) {
             boolean refreshing = mSwipeRefreshLayout.isRefreshing();
             if (refreshing) {
@@ -130,6 +134,7 @@ public class NewsFragment extends BaseFragment implements NewsContract.View, Swi
     public void fetchNewsFailed(Throwable throwable) {
         AppLog.d("fetch news failed ---" + throwable.toString());
         mNewsAdapter.showLoadMoreFailedView();
+        dismissSwipeRefreshLayout();
     }
 
     @Override
@@ -147,9 +152,18 @@ public class NewsFragment extends BaseFragment implements NewsContract.View, Swi
         Toast.makeText(getContext(), "no more data", Toast.LENGTH_LONG).show();
     }
 
+
     @Override
-    public void loadMoreNewsFailed(Throwable throwable) {
-        AppLog.d("load more request failed ---" + throwable.toString());
-        mNewsAdapter.showLoadMoreFailedView();
+    public void pullDownRefreshSuccess(List<BlogList.ItemsEntity> newDataList) {
+        if (mNewsAdapter != null) {
+            mNewsAdapter.getData().add(0, newDataList);
+            mNewsAdapter.notifyDataSetChanged();
+        }
+        dismissSwipeRefreshLayout();
+    }
+
+    @Override
+    public List<BlogList.ItemsEntity> getData() {
+        return mNewsAdapter.getData();
     }
 }

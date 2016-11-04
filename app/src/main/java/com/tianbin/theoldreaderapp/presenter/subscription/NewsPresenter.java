@@ -1,11 +1,11 @@
 package com.tianbin.theoldreaderapp.presenter.subscription;
 
-import com.tianbin.theoldreaderapp.common.wrapper.AppLog;
 import com.tianbin.theoldreaderapp.contract.subscription.NewsContract;
 import com.tianbin.theoldreaderapp.data.module.BlogList;
 import com.tianbin.theoldreaderapp.data.net.SubscriptionDataSource;
 
 import java.util.Calendar;
+import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -16,8 +16,6 @@ import rx.schedulers.Schedulers;
  * Created by tianbin on 16/11/3.
  */
 public class NewsPresenter implements NewsContract.Presenter {
-
-    private final int limit = 20;
 
     private NewsContract.View mView;
 
@@ -42,8 +40,7 @@ public class NewsPresenter implements NewsContract.Presenter {
     }
 
     @Override
-    public void fetchNews() {
-        AppLog.d("fetch news");
+    public void fetchNews(final NewsContract.FetchType type) {
         SubscriptionDataSource.getInstance()
                 .getBlogList(getTimeInSecond())
                 .subscribeOn(Schedulers.io())
@@ -52,7 +49,22 @@ public class NewsPresenter implements NewsContract.Presenter {
                     @Override
                     public void call(BlogList blogList) {
                         mContinuation = blogList.getContinuation();
-                        mView.fetchNewsSuccess(blogList.getItems());
+                        switch (type) {
+                            case INIT:
+                                mView.fetchNewsSuccess(blogList.getItems());
+                                break;
+                            case REFRESH:
+                                mView.pullDownRefreshSuccess(getNewData(blogList));
+                                break;
+                            case LOAD_MORE:
+                                if (mContinuation != 0) {
+                                    mView.loadMoreNewsSuccess(blogList.getItems());
+                                } else {
+                                    mView.loadMoreNewsCompleted();
+                                }
+                                break;
+                        }
+
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -62,28 +74,9 @@ public class NewsPresenter implements NewsContract.Presenter {
                 });
     }
 
-    @Override
-    public void loadMoreNews() {
-        SubscriptionDataSource.getInstance()
-                .getBlogList(mContinuation)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<BlogList>() {
-                    @Override
-                    public void call(BlogList blogList) {
-                        AppLog.e("continuation --- " + blogList.getContinuation());
-                        mContinuation = blogList.getContinuation();
-                        if (mContinuation != 0) {
-                            mView.loadMoreNewsSuccess(blogList.getItems());
-                        } else {
-                            mView.loadMoreNewsCompleted();
-                        }
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        mView.loadMoreNewsFailed(throwable);
-                    }
-                });
+    private List<BlogList.ItemsEntity> getNewData(BlogList blogList) {
+        List<BlogList.ItemsEntity> data = mView.getData();
+        // // TODO: 16/11/5  
+        return null;
     }
 }
