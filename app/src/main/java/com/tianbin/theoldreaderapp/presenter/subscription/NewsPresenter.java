@@ -1,9 +1,11 @@
 package com.tianbin.theoldreaderapp.presenter.subscription;
 
+import com.tianbin.theoldreaderapp.common.wrapper.AppLog;
 import com.tianbin.theoldreaderapp.contract.subscription.NewsContract;
 import com.tianbin.theoldreaderapp.data.module.BlogList;
 import com.tianbin.theoldreaderapp.data.net.SubscriptionDataSource;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -41,22 +43,26 @@ public class NewsPresenter implements NewsContract.Presenter {
 
     @Override
     public void fetchNews(final NewsContract.FetchType type) {
+        AppLog.d("fetch news --- " + type.toString());
         SubscriptionDataSource.getInstance()
-                .getBlogList(getTimeInSecond())
+                .getBlogList(mContinuation)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<BlogList>() {
                     @Override
                     public void call(BlogList blogList) {
+                        AppLog.d("fetch news success --- " + type.toString());
                         mContinuation = blogList.getContinuation();
                         switch (type) {
                             case INIT:
                                 mView.fetchNewsSuccess(blogList.getItems());
                                 break;
                             case REFRESH:
-                                mView.pullDownRefreshSuccess(getNewData(blogList));
+                                appendNewData(blogList);
+                                mView.pullDownRefreshSuccess();
                                 break;
                             case LOAD_MORE:
+                                AppLog.e("continuation --- " + mContinuation);
                                 if (mContinuation != 0) {
                                     mView.loadMoreNewsSuccess(blogList.getItems());
                                 } else {
@@ -69,14 +75,24 @@ public class NewsPresenter implements NewsContract.Presenter {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
+                        AppLog.d("fetch news failed");
                         mView.fetchNewsFailed(throwable);
                     }
                 });
     }
 
-    private List<BlogList.ItemsEntity> getNewData(BlogList blogList) {
-        List<BlogList.ItemsEntity> data = mView.getData();
-        // // TODO: 16/11/5  
-        return null;
+    private void appendNewData(BlogList blogList) {
+        List<BlogList.ItemEntity> data = mView.getData();
+        List<BlogList.ItemEntity> items = blogList.getItems();
+
+        List<BlogList.ItemEntity> newBlogItems = new ArrayList<>();
+        for (BlogList.ItemEntity item : items) {
+            if (!data.contains(item)) {
+                newBlogItems.add(item);
+            } else {
+                break;
+            }
+        }
+        data.addAll(newBlogItems);
     }
 }

@@ -66,7 +66,6 @@ public class NewsFragment extends BaseFragment implements NewsContract.View, Swi
         mNewsAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                AppLog.d("load more request");
                 mNewsPresenter.fetchNews(NewsContract.FetchType.LOAD_MORE);
             }
         });
@@ -112,8 +111,7 @@ public class NewsFragment extends BaseFragment implements NewsContract.View, Swi
     }
 
     @Override
-    public void fetchNewsSuccess(List<BlogList.ItemsEntity> blogList) {
-        AppLog.d("fetch news success");
+    public void fetchNewsSuccess(List<BlogList.ItemEntity> blogList) {
         if (mNewsAdapter != null) {
             mNewsAdapter.setNewData(blogList);
             mNewsAdapter.notifyDataSetChanged();
@@ -132,14 +130,12 @@ public class NewsFragment extends BaseFragment implements NewsContract.View, Swi
 
     @Override
     public void fetchNewsFailed(Throwable throwable) {
-        AppLog.d("fetch news failed ---" + throwable.toString());
         mNewsAdapter.showLoadMoreFailedView();
         dismissSwipeRefreshLayout();
     }
 
     @Override
-    public void loadMoreNewsSuccess(List<BlogList.ItemsEntity> blogList) {
-        AppLog.d("load more request success");
+    public void loadMoreNewsSuccess(List<BlogList.ItemEntity> blogList) {
         if (mNewsAdapter != null) {
             mNewsAdapter.addData(blogList);
         }
@@ -147,23 +143,20 @@ public class NewsFragment extends BaseFragment implements NewsContract.View, Swi
 
     @Override
     public void loadMoreNewsCompleted() {
-        AppLog.d("load more request completed");
         mNewsAdapter.loadComplete();
         Toast.makeText(getContext(), "no more data", Toast.LENGTH_LONG).show();
     }
 
-
     @Override
-    public void pullDownRefreshSuccess(List<BlogList.ItemsEntity> newDataList) {
+    public void pullDownRefreshSuccess() {
         if (mNewsAdapter != null) {
-            mNewsAdapter.getData().add(0, newDataList);
             mNewsAdapter.notifyDataSetChanged();
         }
         dismissSwipeRefreshLayout();
     }
 
     @Override
-    public List<BlogList.ItemsEntity> getData() {
+    public List<BlogList.ItemEntity> getData() {
         return mNewsAdapter.getData();
     }
 }

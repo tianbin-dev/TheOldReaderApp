@@ -25,7 +25,7 @@ public class BlogList {
     @SerializedName("continuation")
     private long mContinuation;
     @SerializedName("items")
-    private List<ItemsEntity> mItems;
+    private List<ItemEntity> mItems;
 
     public String getDirection() {
         return mDirection;
@@ -83,11 +83,11 @@ public class BlogList {
         mContinuation = continuation;
     }
 
-    public List<ItemsEntity> getItems() {
+    public List<ItemEntity> getItems() {
         return mItems;
     }
 
-    public void setItems(List<ItemsEntity> items) {
+    public void setItems(List<ItemEntity> items) {
         mItems = items;
     }
 
@@ -104,7 +104,7 @@ public class BlogList {
         }
     }
 
-    public static class ItemsEntity {
+    public static class ItemEntity {
         @SerializedName("crawlTimeMsec")
         private String mCrawlTimeMsec;
         @SerializedName("timestampUsec")
@@ -137,6 +137,23 @@ public class BlogList {
         private List<?> mLikingUsers;
         @SerializedName("comments")
         private List<?> mComments;
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == null) {
+                return false;
+            }
+
+            if (obj instanceof ItemEntity) {
+                return this.mId.equals(((ItemEntity) obj).getId());
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return mId.hashCode();
+        }
 
         public String getCrawlTimeMsec() {
             return mCrawlTimeMsec;
