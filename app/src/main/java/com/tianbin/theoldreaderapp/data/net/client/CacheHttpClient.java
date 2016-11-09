@@ -3,18 +3,15 @@ package com.tianbin.theoldreaderapp.data.net.client;
 import android.content.Context;
 
 import com.tianbin.theoldreaderapp.MyApplication;
-import com.tianbin.theoldreaderapp.common.util.NetworkUtil;
 import com.tianbin.theoldreaderapp.data.net.client.core.BaseOkHttpClient;
+import com.tianbin.theoldreaderapp.data.net.client.interceptor.AppendParamInterceptor;
+import com.tianbin.theoldreaderapp.data.net.client.interceptor.CacheControllInterceptor;
+import com.tianbin.theoldreaderapp.data.net.client.interceptor.TokenInterceptor;
 
 import java.io.File;
-import java.io.IOException;
 
 import okhttp3.Cache;
-import okhttp3.CacheControl;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * cache http client
@@ -32,47 +29,15 @@ public class CacheHttpClient extends BaseOkHttpClient {
 
     @Override
     public OkHttpClient.Builder customize(OkHttpClient.Builder builder) {
-        super.customize(builder);
+        builder.addInterceptor(new TokenInterceptor());
+        builder.addInterceptor(new AppendParamInterceptor());
 
         // set cache dir
         File cacheFile = new File(mContext.getCacheDir(), "reader_repo");
         Cache cache = new Cache(cacheFile, CACHE_SIZE);
         builder.cache(cache);
-
-        builder.addNetworkInterceptor(mCacheControlInterceptor);
+        builder.addNetworkInterceptor(new CacheControllInterceptor(mContext));
         return builder;
     }
-
-    private final Interceptor mCacheControlInterceptor = new Interceptor() {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Request request = chain.request();
-
-            // Add FORCE_CACHE cache control for each request if network is not available.
-            if (!NetworkUtil.isNetworkAvailable(mContext)) {
-                request = request.newBuilder()
-                        .cacheControl(CacheControl.FORCE_CACHE)
-                        .build();
-            }
-
-            Response originalResponse = chain.proceed(request);
-
-            if (NetworkUtil.isNetworkAvailable(mContext)) {
-
-                String cacheControl = request.cacheControl().toString();
-
-                // Add cache control header for response same as request's while network is available.
-                return originalResponse.newBuilder()
-                        .header("Cache-Control", cacheControl)
-                        .build();
-            } else {
-                // Add cache control header for response to FORCE_CACHE while network is not available.
-                return originalResponse.newBuilder()
-                        .header("Cache-Control", CacheControl.FORCE_CACHE.toString())
-                        .build();
-            }
-        }
-    };
-
 
 }

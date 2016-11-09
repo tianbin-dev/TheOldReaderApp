@@ -1,8 +1,6 @@
 package com.tianbin.theoldreaderapp.data.net.client.core;
 
 import com.tianbin.theoldreaderapp.BuildConfig;
-import com.tianbin.theoldreaderapp.data.net.client.interceptor.AppendParamInterceptor;
-import com.tianbin.theoldreaderapp.data.net.client.interceptor.TokenInterceptor;
 
 import java.util.concurrent.TimeUnit;
 
@@ -13,7 +11,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
  * base OkHttp client
  * Created by tianbin on 16/10/20.
  */
-public class BaseOkHttpClient {
+public abstract class BaseOkHttpClient {
 
     private static final long TIMEOUT_CONNECT = 30 * 1000;
 
@@ -28,10 +26,6 @@ public class BaseOkHttpClient {
         return builder.build();
     }
 
-    protected OkHttpClient.Builder customize(OkHttpClient.Builder builder) {
-        builder.addInterceptor(new TokenInterceptor());
-        builder.addInterceptor(new AppendParamInterceptor());
-        return builder;
-    }
+    protected abstract OkHttpClient.Builder customize(OkHttpClient.Builder builder);
 
 }

@@ -1,6 +1,5 @@
 package com.tianbin.theoldreaderapp.data.net.client;
 
-import com.tianbin.theoldreaderapp.data.net.client.core.BaseOkHttpClient;
 import com.tianbin.theoldreaderapp.data.net.client.core.BaseRetrofit;
 
 import okhttp3.OkHttpClient;
@@ -13,6 +12,6 @@ public class AccountRetrofit extends BaseRetrofit {
 
     @Override
     public OkHttpClient getHttpClient() {
-        return new BaseOkHttpClient().get();
+        return new CacheHttpClient().get();
     }
 }
