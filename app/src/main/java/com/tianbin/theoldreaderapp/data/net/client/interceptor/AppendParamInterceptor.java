@@ -1,9 +1,4 @@
-package com.tianbin.theoldreaderapp.data.net.client.core;
-
-import android.text.TextUtils;
-
-import com.tianbin.theoldreaderapp.MyApplication;
-import com.tianbin.theoldreaderapp.data.pref.AccountPref;
+package com.tianbin.theoldreaderapp.data.net.client.interceptor;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -23,18 +18,11 @@ import okio.Sink;
  * base interceptor
  * Created by tianbin on 16/11/3.
  */
-public class BaseInterceptor implements Interceptor {
+public class AppendParamInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-        Request original = chain.request();
-        Request.Builder requestBuilder = original.newBuilder();
-        String token = AccountPref.getLogonToken(MyApplication.getInstance().getApplicationContext());
-        if (!TextUtils.isEmpty(token)) {
-            requestBuilder.header("Authorization", "GoogleLogin auth=" + token);
-        }
-        Request request = addDefaultParameter(requestBuilder.build());
-        return chain.proceed(request);
+        return chain.proceed(addDefaultParameter(chain.request()));
     }
 
     protected Request addDefaultParameter(Request request)

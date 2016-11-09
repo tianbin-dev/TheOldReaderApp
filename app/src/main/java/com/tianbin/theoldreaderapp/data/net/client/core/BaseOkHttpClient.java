@@ -1,6 +1,8 @@
 package com.tianbin.theoldreaderapp.data.net.client.core;
 
 import com.tianbin.theoldreaderapp.BuildConfig;
+import com.tianbin.theoldreaderapp.data.net.client.interceptor.AppendParamInterceptor;
+import com.tianbin.theoldreaderapp.data.net.client.interceptor.TokenInterceptor;
 
 import java.util.concurrent.TimeUnit;
 
@@ -27,7 +29,8 @@ public class BaseOkHttpClient {
     }
 
     protected OkHttpClient.Builder customize(OkHttpClient.Builder builder) {
-        builder.addInterceptor(new BaseInterceptor());
+        builder.addInterceptor(new TokenInterceptor());
+        builder.addInterceptor(new AppendParamInterceptor());
         return builder;
     }
 
