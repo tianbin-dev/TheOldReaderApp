@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.tianbin.theoldreaderapp.R;
 import com.tianbin.theoldreaderapp.contract.account.LoginContract;
+import com.tianbin.theoldreaderapp.data.pref.AccountPref;
 import com.tianbin.theoldreaderapp.presenter.account.LoginPresenter;
 
 import java.util.ArrayList;
@@ -67,6 +68,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        if (!TextUtils.isEmpty(AccountPref.getLogonToken(this))) {
+            loginSuccess();
+        }
+
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -192,8 +198,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             //mAuthTask = new UserLoginTask(email, password);
             //mAuthTask.execute((Void) null);
 
-            //mLoginPresenter.loginAndSaveToken(email, password);
-            loginSuccess();
+            mLoginPresenter.loginAndSaveToken(email, password);
         }
     }
 
@@ -293,13 +298,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     @Override
     public void showLoginFailureInfo() {
-        Toast.makeText(this, "登陆失败", Toast.LENGTH_LONG);
+        Toast.makeText(this, "登陆失败", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void loginSuccess() {
-        finish();
         MainActivity.start(this);
+        finish();
     }
 
     @Override

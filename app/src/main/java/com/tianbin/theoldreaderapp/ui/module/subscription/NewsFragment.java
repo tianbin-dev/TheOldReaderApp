@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.tianbin.theoldreaderapp.R;
-import com.tianbin.theoldreaderapp.common.wrapper.AppLog;
 import com.tianbin.theoldreaderapp.contract.subscription.NewsContract;
 import com.tianbin.theoldreaderapp.data.module.BlogList;
 import com.tianbin.theoldreaderapp.presenter.subscription.NewsPresenter;
@@ -130,7 +129,6 @@ public class NewsFragment extends BaseFragment implements NewsContract.View, Swi
 
     @Override
     public void fetchNewsFailed(Throwable throwable) {
-        mNewsAdapter.showLoadMoreFailedView();
         dismissSwipeRefreshLayout();
     }
 

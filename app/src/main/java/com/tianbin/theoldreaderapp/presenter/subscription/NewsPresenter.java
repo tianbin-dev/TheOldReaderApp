@@ -4,13 +4,13 @@ import com.tianbin.theoldreaderapp.common.wrapper.AppLog;
 import com.tianbin.theoldreaderapp.contract.subscription.NewsContract;
 import com.tianbin.theoldreaderapp.data.module.BlogList;
 import com.tianbin.theoldreaderapp.data.net.SubscriptionDataSource;
+import com.tianbin.theoldreaderapp.data.rx.ResponseObserver;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -48,9 +48,15 @@ public class NewsPresenter implements NewsContract.Presenter {
                 .getBlogList(mContinuation)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<BlogList>() {
+                .subscribe(new ResponseObserver<BlogList>() {
+
                     @Override
-                    public void call(BlogList blogList) {
+                    public void onError(Throwable e) {
+                        mView.fetchNewsFailed(e);
+                    }
+
+                    @Override
+                    public void onSuccess(BlogList blogList) {
                         AppLog.d("fetch news success --- " + type.toString());
                         mContinuation = blogList.getContinuation();
                         switch (type) {
@@ -70,13 +76,6 @@ public class NewsPresenter implements NewsContract.Presenter {
                                 }
                                 break;
                         }
-
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        AppLog.d("fetch news failed");
-                        mView.fetchNewsFailed(throwable);
                     }
                 });
     }
