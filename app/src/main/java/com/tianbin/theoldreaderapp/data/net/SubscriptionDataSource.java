@@ -26,7 +26,7 @@ public class SubscriptionDataSource implements SubscriptionApi {
     }
 
     private SubscriptionDataSource() {
-        mSubscriptionService = new SubscriptionRetrofit().get().create(SubscriptionService.class);
+        mSubscriptionService = SubscriptionRetrofit.getService();
     }
 
     @Override
