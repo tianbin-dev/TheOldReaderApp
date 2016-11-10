@@ -29,7 +29,9 @@ public interface NewsContract {
 
     interface Presenter extends MvpPresenter<View> {
 
-        void fetchNews(FetchType type);
+        void fetchAllBlog(FetchType type);
+
+        void fetchUnReadBlog(FetchType type);
     }
 
     enum FetchType {

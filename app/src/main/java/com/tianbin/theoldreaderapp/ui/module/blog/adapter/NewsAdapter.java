@@ -1,4 +1,4 @@
-package com.tianbin.theoldreaderapp.ui.module.subscription.adapter;
+package com.tianbin.theoldreaderapp.ui.module.blog.adapter;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;

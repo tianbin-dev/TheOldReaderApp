@@ -1,4 +1,4 @@
-package com.tianbin.theoldreaderapp.ui.module.subscription;
+package com.tianbin.theoldreaderapp.ui.module.blog;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,9 +17,9 @@ import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.tianbin.theoldreaderapp.R;
 import com.tianbin.theoldreaderapp.contract.subscription.NewsContract;
 import com.tianbin.theoldreaderapp.data.module.BlogList;
-import com.tianbin.theoldreaderapp.presenter.subscription.NewsPresenter;
+import com.tianbin.theoldreaderapp.presenter.blog.NewsPresenter;
 import com.tianbin.theoldreaderapp.ui.base.BaseFragment;
-import com.tianbin.theoldreaderapp.ui.module.subscription.adapter.NewsAdapter;
+import com.tianbin.theoldreaderapp.ui.module.blog.adapter.NewsAdapter;
 
 import java.util.List;
 
@@ -55,7 +55,7 @@ public class NewsFragment extends BaseFragment implements NewsContract.View, Swi
         initAdapter();
         initRecyclerView();
 
-        mNewsPresenter.fetchNews(NewsContract.FetchType.INIT);
+        mNewsPresenter.fetchUnReadBlog(NewsContract.FetchType.INIT);
         mSwipeRefreshLayout.setRefreshing(true);
     }
 
@@ -65,7 +65,7 @@ public class NewsFragment extends BaseFragment implements NewsContract.View, Swi
         mNewsAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                mNewsPresenter.fetchNews(NewsContract.FetchType.LOAD_MORE);
+                mNewsPresenter.fetchUnReadBlog(NewsContract.FetchType.LOAD_MORE);
             }
         });
         addLoadingView();
@@ -105,7 +105,7 @@ public class NewsFragment extends BaseFragment implements NewsContract.View, Swi
     @Override
     public void onRefresh() {
         if (mNewsPresenter != null && !mNewsAdapter.isLoading()) {
-            mNewsPresenter.fetchNews(NewsContract.FetchType.REFRESH);
+            mNewsPresenter.fetchUnReadBlog(NewsContract.FetchType.REFRESH);
         }
     }
 

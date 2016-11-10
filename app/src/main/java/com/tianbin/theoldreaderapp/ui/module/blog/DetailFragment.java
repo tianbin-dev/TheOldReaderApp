@@ -1,4 +1,4 @@
-package com.tianbin.theoldreaderapp.ui.module.subscription;
+package com.tianbin.theoldreaderapp.ui.module.blog;
 
 import android.content.Context;
 import android.content.Intent;

@@ -13,7 +13,7 @@ import android.view.MenuItem;
 import com.tianbin.theoldreaderapp.R;
 import com.tianbin.theoldreaderapp.ui.module.account.FavouriteFragment;
 import com.tianbin.theoldreaderapp.ui.module.account.ProfileFragment;
-import com.tianbin.theoldreaderapp.ui.module.subscription.NewsFragment;
+import com.tianbin.theoldreaderapp.ui.module.blog.NewsFragment;
 import com.tianbin.theoldreaderapp.ui.module.subscription.SubscriptionsFragment;
 
 import butterknife.BindView;

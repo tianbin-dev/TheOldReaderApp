@@ -1,16 +1,21 @@
-package com.tianbin.theoldreaderapp.presenter.subscription;
+package com.tianbin.theoldreaderapp.presenter.blog;
+
+import android.support.annotation.NonNull;
 
 import com.tianbin.theoldreaderapp.common.wrapper.AppLog;
 import com.tianbin.theoldreaderapp.contract.subscription.NewsContract;
+import com.tianbin.theoldreaderapp.data.module.BlogIdItemList;
 import com.tianbin.theoldreaderapp.data.module.BlogList;
-import com.tianbin.theoldreaderapp.data.net.SubscriptionDataSource;
+import com.tianbin.theoldreaderapp.data.net.BlogDataSource;
 import com.tianbin.theoldreaderapp.data.rx.ResponseObserver;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -23,8 +28,11 @@ public class NewsPresenter implements NewsContract.Presenter {
 
     private long mContinuation;
 
+    private BlogDataSource mBlogDataSource;
+
     public NewsPresenter() {
         mContinuation = getTimeInSecond();
+        mBlogDataSource = new BlogDataSource();
     }
 
     private long getTimeInSecond() {
@@ -42,10 +50,9 @@ public class NewsPresenter implements NewsContract.Presenter {
     }
 
     @Override
-    public void fetchNews(final NewsContract.FetchType type) {
-        AppLog.d("fetch news --- " + type.toString());
-        SubscriptionDataSource.getInstance()
-                .getBlogList(mContinuation)
+    public void fetchAllBlog(final NewsContract.FetchType type) {
+        AppLog.d("fetch all blog --- " + type.toString());
+        mBlogDataSource.getBlogList(mContinuation)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ResponseObserver<BlogList>() {
@@ -57,7 +64,33 @@ public class NewsPresenter implements NewsContract.Presenter {
 
                     @Override
                     public void onSuccess(BlogList blogList) {
-                        AppLog.d("fetch news success --- " + type.toString());
+                        AppLog.d("fetch all blog success --- " + type.toString());
+                    }
+                });
+    }
+
+    @Override
+    public void fetchUnReadBlog(final NewsContract.FetchType type) {
+        mBlogDataSource.getUnReadItemIds()
+                .subscribeOn(Schedulers.io())
+                .map(new Func1<BlogIdItemList, List<String>>() {
+                    @Override
+                    public List<String> call(BlogIdItemList blogIdItemList) {
+                        return getBlogIdList(blogIdItemList);
+                    }
+                })
+                .flatMap(new Func1<List<String>, Observable<BlogList>>() {
+                    @Override
+                    public Observable<BlogList> call(List<String> idList) {
+                        return mBlogDataSource.getUnReadContents(idList);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ResponseObserver<BlogList>() {
+                    @Override
+                    public void onSuccess(BlogList blogList) {
+                        AppLog.d("fetch unread blog success");
+
                         mContinuation = blogList.getContinuation();
                         switch (type) {
                             case INIT:
@@ -77,7 +110,27 @@ public class NewsPresenter implements NewsContract.Presenter {
                                 break;
                         }
                     }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        AppLog.d(e.toString());
+                        mView.fetchNewsFailed(e);
+                    }
                 });
+
+    }
+
+    @NonNull
+    private List<String> getBlogIdList(BlogIdItemList blogIdItemList) {
+        List<BlogIdItemList.BlogIdItem> blogIdItems = blogIdItemList.getItemRefs();
+
+        List<String> idList = new ArrayList<>();
+        if (blogIdItems != null && blogIdItems.size() > 0) {
+            for (BlogIdItemList.BlogIdItem blogIdItem : blogIdItems) {
+                idList.add("tag:google.com,2005:reader/item/"+blogIdItem.getId());
+            }
+        }
+        return idList;
     }
 
     private void appendNewData(BlogList blogList) {
