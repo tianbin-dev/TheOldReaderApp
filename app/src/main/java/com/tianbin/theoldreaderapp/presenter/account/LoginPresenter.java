@@ -5,8 +5,9 @@ import android.util.Log;
 import com.tianbin.theoldreaderapp.contract.account.LoginContract;
 import com.tianbin.theoldreaderapp.data.api.AccountApi;
 import com.tianbin.theoldreaderapp.data.module.TokenInfo;
-import com.tianbin.theoldreaderapp.data.net.AccountDataSource;
 import com.tianbin.theoldreaderapp.data.pref.AccountPref;
+
+import javax.inject.Inject;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -18,12 +19,13 @@ import rx.schedulers.Schedulers;
  */
 public class LoginPresenter implements LoginContract.Preseneter {
 
-    private AccountApi mAccountApi;
-
     private LoginContract.View mView;
 
-    public LoginPresenter() {
-        mAccountApi = new AccountDataSource();
+    AccountApi mAccountApi;
+
+    @Inject
+    public LoginPresenter(AccountApi accountApi) {
+        mAccountApi = accountApi;
     }
 
     @Override

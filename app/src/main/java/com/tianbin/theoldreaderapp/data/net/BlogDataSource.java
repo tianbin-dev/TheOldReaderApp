@@ -3,10 +3,11 @@ package com.tianbin.theoldreaderapp.data.net;
 import com.tianbin.theoldreaderapp.data.api.BlogApi;
 import com.tianbin.theoldreaderapp.data.module.BlogIdItemList;
 import com.tianbin.theoldreaderapp.data.module.BlogList;
-import com.tianbin.theoldreaderapp.data.net.client.BlogRetrofit;
 import com.tianbin.theoldreaderapp.data.net.service.BlogService;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import rx.Observable;
 
@@ -18,8 +19,9 @@ public class BlogDataSource implements BlogApi {
 
     private BlogService mBlogService;
 
-    public BlogDataSource() {
-        mBlogService = BlogRetrofit.getService();
+    @Inject
+    public BlogDataSource(BlogService blogService) {
+        mBlogService = blogService;
     }
 
     @Override

@@ -17,11 +17,14 @@ import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.tianbin.theoldreaderapp.R;
 import com.tianbin.theoldreaderapp.contract.blog.NewsContract;
 import com.tianbin.theoldreaderapp.data.module.BlogList;
+import com.tianbin.theoldreaderapp.di.component.MainComponent;
 import com.tianbin.theoldreaderapp.presenter.blog.NewsPresenter;
 import com.tianbin.theoldreaderapp.ui.base.BaseFragment;
 import com.tianbin.theoldreaderapp.ui.module.blog.adapter.NewsAdapter;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 
@@ -29,14 +32,16 @@ import butterknife.BindView;
  * news fragment
  * Created by tianbin on 16/11/3.
  */
-public class NewsFragment extends BaseFragment implements NewsContract.View, SwipeRefreshLayout.OnRefreshListener {
+public class NewsFragment extends BaseFragment implements NewsContract.View, SwipeRefreshLayout.OnRefreshListener{
 
     @BindView(R.id.news_recycler_view)
     RecyclerView mNewsRecyclerView;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private NewsContract.Presenter mNewsPresenter;
+    @Inject
+    NewsPresenter mNewsPresenter;
+
     private BaseQuickAdapter mNewsAdapter;
 
     @Override
@@ -47,8 +52,8 @@ public class NewsFragment extends BaseFragment implements NewsContract.View, Swi
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getComponent(MainComponent.class).inject(this);
 
-        mNewsPresenter = new NewsPresenter();
         mNewsPresenter.attachView(this);
 
         mSwipeRefreshLayout.setOnRefreshListener(this);

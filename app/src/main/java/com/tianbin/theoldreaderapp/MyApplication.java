@@ -13,18 +13,12 @@ import com.tianbin.theoldreaderapp.di.module.ApplicationModule;
  */
 public class MyApplication extends Application {
 
-    private static MyApplication mInstance;
-
-    public static MyApplication getInstance() {
-        return mInstance;
-    }
-
     ApplicationComponent mApplicationComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mInstance = this;
+
     }
 
     public static MyApplication get(Context context) {

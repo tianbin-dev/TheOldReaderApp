@@ -4,14 +4,16 @@ import android.support.annotation.NonNull;
 
 import com.tianbin.theoldreaderapp.common.wrapper.AppLog;
 import com.tianbin.theoldreaderapp.contract.blog.NewsContract;
+import com.tianbin.theoldreaderapp.data.api.BlogApi;
 import com.tianbin.theoldreaderapp.data.module.BlogIdItemList;
 import com.tianbin.theoldreaderapp.data.module.BlogList;
-import com.tianbin.theoldreaderapp.data.net.BlogDataSource;
 import com.tianbin.theoldreaderapp.data.rx.ResponseObserver;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -28,11 +30,12 @@ public class NewsPresenter implements NewsContract.Presenter {
 
     private long mContinuation;
 
-    private BlogDataSource mBlogDataSource;
+    BlogApi mBlogApi;
 
-    public NewsPresenter() {
+    @Inject
+    public NewsPresenter(BlogApi blogApi) {
+        mBlogApi = blogApi;
         mContinuation = getTimeInSecond();
-        mBlogDataSource = new BlogDataSource();
     }
 
     private long getTimeInSecond() {
@@ -52,7 +55,7 @@ public class NewsPresenter implements NewsContract.Presenter {
     @Override
     public void fetchAllBlog(final NewsContract.FetchType type) {
         AppLog.d("fetch all blog --- " + type.toString());
-        mBlogDataSource.getBlogList(mContinuation)
+        mBlogApi.getBlogList(mContinuation)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ResponseObserver<BlogList>() {
@@ -91,7 +94,7 @@ public class NewsPresenter implements NewsContract.Presenter {
 
     @Override
     public void fetchUnReadBlog(final NewsContract.FetchType type) {
-        mBlogDataSource.getUnReadItemIds()
+        mBlogApi.getUnReadItemIds()
                 .subscribeOn(Schedulers.io())
                 .map(new Func1<BlogIdItemList, List<String>>() {
                     @Override
@@ -102,7 +105,7 @@ public class NewsPresenter implements NewsContract.Presenter {
                 .flatMap(new Func1<List<String>, Observable<BlogList>>() {
                     @Override
                     public Observable<BlogList> call(List<String> idList) {
-                        return mBlogDataSource.getUnReadContents(idList);
+                        return mBlogApi.getUnReadContents(idList);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -147,7 +150,7 @@ public class NewsPresenter implements NewsContract.Presenter {
         List<String> idList = new ArrayList<>();
         if (blogIdItems != null && blogIdItems.size() > 0) {
             for (BlogIdItemList.BlogIdItem blogIdItem : blogIdItems) {
-                idList.add("tag:google.com,2005:reader/item/"+blogIdItem.getId());
+                idList.add("tag:google.com,2005:reader/item/" + blogIdItem.getId());
             }
         }
         return idList;

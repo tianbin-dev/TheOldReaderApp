@@ -1,8 +1,12 @@
 package com.tianbin.theoldreaderapp.data.net.client;
 
+import android.app.Application;
+
 import com.tianbin.theoldreaderapp.data.net.client.core.BaseOkHttpClient;
 import com.tianbin.theoldreaderapp.data.net.client.interceptor.AppendParamInterceptor;
 import com.tianbin.theoldreaderapp.data.net.client.interceptor.TokenInterceptor;
+
+import javax.inject.Inject;
 
 import okhttp3.OkHttpClient;
 
@@ -12,22 +16,16 @@ import okhttp3.OkHttpClient;
  */
 public class CommonHttpClient extends BaseOkHttpClient {
 
-    private static CommonHttpClient mInstance;
+    @Inject
+    Application mContext;
 
-    private CommonHttpClient() {
+    @Inject
+    public CommonHttpClient() {
     }
-
-    public static CommonHttpClient getInstance() {
-        if (mInstance == null) {
-            mInstance = new CommonHttpClient();
-        }
-        return mInstance;
-    }
-
 
     @Override
     public OkHttpClient.Builder customize(OkHttpClient.Builder builder) {
-        builder.addInterceptor(new TokenInterceptor());
+        builder.addInterceptor(new TokenInterceptor(mContext));
         builder.addInterceptor(new AppendParamInterceptor());
         return builder;
     }

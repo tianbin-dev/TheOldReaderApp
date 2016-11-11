@@ -15,7 +15,6 @@ import com.tianbin.theoldreaderapp.MyApplication;
 import com.tianbin.theoldreaderapp.R;
 import com.tianbin.theoldreaderapp.di.component.DaggerMainComponent;
 import com.tianbin.theoldreaderapp.di.component.MainComponent;
-import com.tianbin.theoldreaderapp.di.module.ActivityModule;
 import com.tianbin.theoldreaderapp.ui.module.account.FavouriteFragment;
 import com.tianbin.theoldreaderapp.ui.module.account.ProfileFragment;
 import com.tianbin.theoldreaderapp.ui.module.blog.NewsFragment;
@@ -98,7 +97,6 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Main
     public MainComponent getComponent() {
         return DaggerMainComponent.builder()
                 .applicationComponent(MyApplication.get(this).getComponent())
-                .activityModule(new ActivityModule(this))
                 .build();
     }
 }

@@ -4,6 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
+import javax.inject.Inject;
+
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.MultipartBody;
@@ -19,6 +21,10 @@ import okio.Sink;
  * Created by tianbin on 16/11/3.
  */
 public class AppendParamInterceptor implements Interceptor {
+
+    @Inject
+    public AppendParamInterceptor() {
+    }
 
     @Override
     public Response intercept(Chain chain) throws IOException {

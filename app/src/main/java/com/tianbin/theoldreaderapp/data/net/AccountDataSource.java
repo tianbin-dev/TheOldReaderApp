@@ -2,8 +2,9 @@ package com.tianbin.theoldreaderapp.data.net;
 
 import com.tianbin.theoldreaderapp.data.api.AccountApi;
 import com.tianbin.theoldreaderapp.data.module.TokenInfo;
-import com.tianbin.theoldreaderapp.data.net.client.AccountRetrofit;
 import com.tianbin.theoldreaderapp.data.net.service.AccountService;
+
+import javax.inject.Inject;
 
 import rx.Observable;
 
@@ -15,8 +16,9 @@ public class AccountDataSource implements AccountApi {
 
     private AccountService mAccountService;
 
-    public AccountDataSource() {
-        mAccountService = AccountRetrofit.getService();
+    @Inject
+    public AccountDataSource(AccountService accountService) {
+        mAccountService = accountService;
     }
 
     @Override

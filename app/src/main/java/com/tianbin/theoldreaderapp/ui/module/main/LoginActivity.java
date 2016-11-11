@@ -28,20 +28,28 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.tianbin.theoldreaderapp.HasComponent;
+import com.tianbin.theoldreaderapp.MyApplication;
 import com.tianbin.theoldreaderapp.R;
 import com.tianbin.theoldreaderapp.contract.account.LoginContract;
 import com.tianbin.theoldreaderapp.data.pref.AccountPref;
+import com.tianbin.theoldreaderapp.di.component.DaggerLoginComponent;
+import com.tianbin.theoldreaderapp.di.component.LoginComponent;
+import com.tianbin.theoldreaderapp.di.module.AccountModule;
+import com.tianbin.theoldreaderapp.di.module.ActivityModule;
 import com.tianbin.theoldreaderapp.presenter.account.LoginPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, LoginContract.View {
+public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, LoginContract.View, HasComponent<LoginComponent> {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -62,11 +70,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
 
-    private LoginPresenter mLoginPresenter;
+    @Inject
+    LoginPresenter mLoginPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getComponent().inject(this);
+
         setContentView(R.layout.activity_login);
 
         if (!TextUtils.isEmpty(AccountPref.getLogonToken(this))) {
@@ -104,7 +115,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void initPresenter() {
-        mLoginPresenter = new LoginPresenter();
         mLoginPresenter.attachView(this);
     }
 
@@ -310,6 +320,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     public Context getContext() {
         return this;
+    }
+
+    @Override
+    public LoginComponent getComponent() {
+        return DaggerLoginComponent.builder()
+                .applicationComponent(MyApplication.get(this).getComponent())
+                .activityModule(new ActivityModule(this))
+                .accountModule(new AccountModule())
+                .build();
     }
 
 

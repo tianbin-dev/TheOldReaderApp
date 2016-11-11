@@ -3,7 +3,11 @@ package com.tianbin.theoldreaderapp.di.module;
 import android.app.Application;
 import android.content.Context;
 
+import com.tianbin.theoldreaderapp.data.net.client.AccountRetrofit;
+import com.tianbin.theoldreaderapp.data.net.client.BlogRetrofit;
 import com.tianbin.theoldreaderapp.data.net.client.SubscriptionRetrofit;
+import com.tianbin.theoldreaderapp.data.net.service.AccountService;
+import com.tianbin.theoldreaderapp.data.net.service.BlogService;
 import com.tianbin.theoldreaderapp.data.net.service.SubscriptionService;
 import com.tianbin.theoldreaderapp.di.ForApplication;
 
@@ -26,13 +30,13 @@ public class ApplicationModule {
     }
 
     @Provides
-    Application provideApplication() {
+    @ForApplication
+    Context provideContext() {
         return mApplication;
     }
 
     @Provides
-    @ForApplication
-    Context provideContext() {
+    Application provideApplication() {
         return mApplication;
     }
 
@@ -40,5 +44,17 @@ public class ApplicationModule {
     @Singleton
     SubscriptionService provideSubscriptionService(SubscriptionRetrofit retrofit) {
         return retrofit.get().create(SubscriptionService.class);
+    }
+
+    @Provides
+    @Singleton
+    AccountService provideAccountService(AccountRetrofit retrofit) {
+        return retrofit.get().create(AccountService.class);
+    }
+
+    @Provides
+    @Singleton
+    BlogService provideBlogService(BlogRetrofit retrofit) {
+        return retrofit.get().create(BlogService.class);
     }
 }

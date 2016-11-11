@@ -1,7 +1,8 @@
 package com.tianbin.theoldreaderapp.data.net.client;
 
 import com.tianbin.theoldreaderapp.data.net.client.core.BaseRetrofit;
-import com.tianbin.theoldreaderapp.data.net.service.AccountService;
+
+import javax.inject.Inject;
 
 import okhttp3.OkHttpClient;
 
@@ -11,20 +12,15 @@ import okhttp3.OkHttpClient;
  */
 public class AccountRetrofit extends BaseRetrofit {
 
-    private static AccountRetrofit mRetrofit;
+    CommonHttpClient mCommonHttpClient;
 
-    private AccountRetrofit() {
-    }
-
-    public static AccountService getService() {
-        if (mRetrofit == null) {
-            mRetrofit = new AccountRetrofit();
-        }
-        return mRetrofit.get().create(AccountService.class);
+    @Inject
+    AccountRetrofit(CommonHttpClient commonHttpClient) {
+        mCommonHttpClient = commonHttpClient;
     }
 
     @Override
     public OkHttpClient getHttpClient() {
-        return CommonHttpClient.getInstance().get();
+        return mCommonHttpClient.get();
     }
 }

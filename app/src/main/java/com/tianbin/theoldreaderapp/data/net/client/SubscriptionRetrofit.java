@@ -12,14 +12,16 @@ import okhttp3.OkHttpClient;
  */
 public class SubscriptionRetrofit extends BaseRetrofit {
 
-    @Inject
-    public SubscriptionRetrofit() {
+    CommonHttpClient mOkHttpClient;
 
+    @Inject
+    public SubscriptionRetrofit(CommonHttpClient okHttpClient) {
+        mOkHttpClient = okHttpClient;
     }
 
     @Override
     public OkHttpClient getHttpClient() {
-        return CommonHttpClient.getInstance().get();
+        return mOkHttpClient.get();
     }
 
 
