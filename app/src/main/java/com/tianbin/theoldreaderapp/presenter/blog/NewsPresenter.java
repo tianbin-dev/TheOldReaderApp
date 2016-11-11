@@ -3,7 +3,7 @@ package com.tianbin.theoldreaderapp.presenter.blog;
 import android.support.annotation.NonNull;
 
 import com.tianbin.theoldreaderapp.common.wrapper.AppLog;
-import com.tianbin.theoldreaderapp.contract.subscription.NewsContract;
+import com.tianbin.theoldreaderapp.contract.blog.NewsContract;
 import com.tianbin.theoldreaderapp.data.module.BlogIdItemList;
 import com.tianbin.theoldreaderapp.data.module.BlogList;
 import com.tianbin.theoldreaderapp.data.net.BlogDataSource;
@@ -59,12 +59,32 @@ public class NewsPresenter implements NewsContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        AppLog.d(e.toString());
                         mView.fetchNewsFailed(e);
                     }
 
                     @Override
                     public void onSuccess(BlogList blogList) {
                         AppLog.d("fetch all blog success --- " + type.toString());
+
+                        mContinuation = blogList.getContinuation();
+                        switch (type) {
+                            case INIT:
+                                mView.fetchNewsSuccess(blogList.getItems());
+                                break;
+                            case REFRESH:
+                                appendNewData(blogList);
+                                mView.pullDownRefreshSuccess();
+                                break;
+                            case LOAD_MORE:
+                                AppLog.e("continuation --- " + mContinuation);
+                                if (mContinuation != 0) {
+                                    mView.loadMoreNewsSuccess(blogList.getItems());
+                                } else {
+                                    mView.loadMoreNewsCompleted();
+                                }
+                                break;
+                        }
                     }
                 });
     }

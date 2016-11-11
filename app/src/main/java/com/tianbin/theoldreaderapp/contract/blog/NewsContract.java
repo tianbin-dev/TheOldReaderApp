@@ -1,4 +1,4 @@
-package com.tianbin.theoldreaderapp.contract.subscription;
+package com.tianbin.theoldreaderapp.contract.blog;
 
 import com.tianbin.theoldreaderapp.data.module.BlogList;
 import com.tianbin.theoldreaderapp.mvp.MvpPresenter;

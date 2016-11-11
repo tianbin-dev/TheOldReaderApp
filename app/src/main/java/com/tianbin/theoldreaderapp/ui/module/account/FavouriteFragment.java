@@ -8,9 +8,9 @@ import com.tianbin.theoldreaderapp.R;
 import com.tianbin.theoldreaderapp.ui.base.BaseFragment;
 
 /**
+ * fav fragment
  * Created by tianbin on 16/11/4.
  */
-
 public class FavouriteFragment extends BaseFragment {
 
     @Override

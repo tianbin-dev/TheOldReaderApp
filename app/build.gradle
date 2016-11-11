@@ -72,4 +72,10 @@ dependencies {
     // https://github.com/orhanobut/logger
     compile 'com.orhanobut:logger:1.14'
 
+    // Dagger2
+    // https://github.com/google/dagger
+    final DAGGER_VERSION = '2.5'
+    compile "com.google.dagger:dagger:$DAGGER_VERSION"
+    apt "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
+    provided 'org.glassfish:javax.annotation:10.0-b28'
 }
