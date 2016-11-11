@@ -10,7 +10,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.tianbin.theoldreaderapp.HasComponent;
+import com.tianbin.theoldreaderapp.MyApplication;
 import com.tianbin.theoldreaderapp.R;
+import com.tianbin.theoldreaderapp.di.component.DaggerMainComponent;
+import com.tianbin.theoldreaderapp.di.component.MainComponent;
+import com.tianbin.theoldreaderapp.di.module.ActivityModule;
 import com.tianbin.theoldreaderapp.ui.module.account.FavouriteFragment;
 import com.tianbin.theoldreaderapp.ui.module.account.ProfileFragment;
 import com.tianbin.theoldreaderapp.ui.module.blog.NewsFragment;
@@ -19,7 +24,7 @@ import com.tianbin.theoldreaderapp.ui.module.subscription.SubscriptionsFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements HasComponent<MainComponent>{
 
     @BindView(R.id.bottom_navigation_view)
     BottomNavigationView mBottomNavigationView;
@@ -87,5 +92,13 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return null;
         }
+    }
+
+    @Override
+    public MainComponent getComponent() {
+        return DaggerMainComponent.builder()
+                .applicationComponent(MyApplication.get(this).getComponent())
+                .activityModule(new ActivityModule(this))
+                .build();
     }
 }

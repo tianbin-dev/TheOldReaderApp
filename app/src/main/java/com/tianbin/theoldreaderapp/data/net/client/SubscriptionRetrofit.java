@@ -1,7 +1,8 @@
 package com.tianbin.theoldreaderapp.data.net.client;
 
 import com.tianbin.theoldreaderapp.data.net.client.core.BaseRetrofit;
-import com.tianbin.theoldreaderapp.data.net.service.SubscriptionService;
+
+import javax.inject.Inject;
 
 import okhttp3.OkHttpClient;
 
@@ -11,16 +12,9 @@ import okhttp3.OkHttpClient;
  */
 public class SubscriptionRetrofit extends BaseRetrofit {
 
-    private static SubscriptionRetrofit mRetrofit;
+    @Inject
+    public SubscriptionRetrofit() {
 
-    private SubscriptionRetrofit() {
-    }
-
-    public static SubscriptionService getService() {
-        if (mRetrofit == null) {
-            mRetrofit = new SubscriptionRetrofit();
-        }
-        return mRetrofit.get().create(SubscriptionService.class);
     }
 
     @Override

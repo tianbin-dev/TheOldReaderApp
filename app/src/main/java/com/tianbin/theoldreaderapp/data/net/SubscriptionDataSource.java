@@ -2,8 +2,9 @@ package com.tianbin.theoldreaderapp.data.net;
 
 import com.tianbin.theoldreaderapp.data.api.SubscriptionApi;
 import com.tianbin.theoldreaderapp.data.module.SubscriptionList;
-import com.tianbin.theoldreaderapp.data.net.client.SubscriptionRetrofit;
 import com.tianbin.theoldreaderapp.data.net.service.SubscriptionService;
+
+import javax.inject.Inject;
 
 import rx.Observable;
 
@@ -13,10 +14,11 @@ import rx.Observable;
  */
 public class SubscriptionDataSource implements SubscriptionApi {
 
-    private SubscriptionService mSubscriptionService;
+    SubscriptionService mSubscriptionService;
 
-    public SubscriptionDataSource() {
-        mSubscriptionService = SubscriptionRetrofit.getService();
+    @Inject
+    public SubscriptionDataSource(SubscriptionService subscriptionService) {
+        mSubscriptionService = subscriptionService;
     }
 
     @Override

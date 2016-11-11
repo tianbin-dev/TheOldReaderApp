@@ -2,10 +2,11 @@ package com.tianbin.theoldreaderapp.presenter.subscription;
 
 import com.tianbin.theoldreaderapp.common.wrapper.AppLog;
 import com.tianbin.theoldreaderapp.contract.subscription.SubscriptionContract;
+import com.tianbin.theoldreaderapp.data.api.SubscriptionApi;
 import com.tianbin.theoldreaderapp.data.module.SubscriptionList;
-import com.tianbin.theoldreaderapp.data.net.client.SubscriptionRetrofit;
-import com.tianbin.theoldreaderapp.data.net.service.SubscriptionService;
 import com.tianbin.theoldreaderapp.data.rx.ResponseObserver;
+
+import javax.inject.Inject;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -18,15 +19,16 @@ public class SubscriptionPresenter implements SubscriptionContract.Presenter {
 
     private SubscriptionContract.View mView;
 
-    private SubscriptionService mSubscriptionService;
+    SubscriptionApi mSubscriptionDataService;
 
-    public SubscriptionPresenter() {
-        mSubscriptionService = SubscriptionRetrofit.getService();
+    @Inject
+    public SubscriptionPresenter(SubscriptionApi subscriptionDataService) {
+        mSubscriptionDataService = subscriptionDataService;
     }
 
     @Override
     public void fetchSubscriptions() {
-        mSubscriptionService.getSubscriptionList()
+        mSubscriptionDataService.getSubscriptionList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ResponseObserver<SubscriptionList>() {

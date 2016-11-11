@@ -10,8 +10,11 @@ import android.view.ViewGroup;
 import com.tianbin.theoldreaderapp.R;
 import com.tianbin.theoldreaderapp.contract.subscription.SubscriptionContract;
 import com.tianbin.theoldreaderapp.data.module.SubscriptionList;
+import com.tianbin.theoldreaderapp.di.component.MainComponent;
 import com.tianbin.theoldreaderapp.presenter.subscription.SubscriptionPresenter;
 import com.tianbin.theoldreaderapp.ui.base.BaseFragment;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,8 +28,8 @@ public class SubscriptionsFragment extends BaseFragment implements SubscriptionC
     @BindView(R.id.tool_bar)
     Toolbar mToolBar;
 
-
-    private SubscriptionPresenter mSubscriptionPresenter;
+    @Inject
+    SubscriptionPresenter mSubscriptionPresenter;
 
     @Override
     protected int getLayoutResId() {
@@ -34,10 +37,15 @@ public class SubscriptionsFragment extends BaseFragment implements SubscriptionC
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getComponent(MainComponent.class).inject(this);
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mSubscriptionPresenter = new SubscriptionPresenter();
         mSubscriptionPresenter.attachView(this);
 
         mSubscriptionPresenter.fetchSubscriptions();
