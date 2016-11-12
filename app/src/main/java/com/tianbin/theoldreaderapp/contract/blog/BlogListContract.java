@@ -10,7 +10,7 @@ import java.util.List;
  * news contract
  * Created by tianbin on 16/11/3.
  */
-public interface NewsContract {
+public interface BlogListContract {
 
     interface View extends MvpView {
 

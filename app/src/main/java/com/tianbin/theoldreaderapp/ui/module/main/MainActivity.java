@@ -17,7 +17,7 @@ import com.tianbin.theoldreaderapp.di.component.DaggerMainComponent;
 import com.tianbin.theoldreaderapp.di.component.MainComponent;
 import com.tianbin.theoldreaderapp.ui.module.account.FavouriteFragment;
 import com.tianbin.theoldreaderapp.ui.module.account.ProfileFragment;
-import com.tianbin.theoldreaderapp.ui.module.blog.NewsFragment;
+import com.tianbin.theoldreaderapp.ui.module.blog.LastestBlogListFragment;
 import com.tianbin.theoldreaderapp.ui.module.subscription.SubscriptionFragment;
 
 import butterknife.BindView;
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Main
                         return true;
                     }
                 });
-        switchMenu(NewsFragment.class.getName());
+        switchMenu(LastestBlogListFragment.class.getName());
     }
 
     private Fragment mCurrentFragment;
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Main
     private String getFragmentName(int menuId) {
         switch (menuId) {
             case R.id.action_news_list:
-                return NewsFragment.class.getName();
+                return LastestBlogListFragment.class.getName();
             case R.id.action_subscription_list:
                 return SubscriptionFragment.class.getName();
             case R.id.action_fav_list:

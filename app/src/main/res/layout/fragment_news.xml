@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    tools:context="com.tianbin.theoldreaderapp.ui.module.blog.NewsFragment">
+    tools:context="com.tianbin.theoldreaderapp.ui.module.blog.BlogListBaseFragment">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"

@@ -2,12 +2,14 @@ package com.tianbin.theoldreaderapp.ui.module.subscription;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
+import android.support.v7.widget.helper.ItemTouchHelper;
 
+import com.loopeer.itemtouchhelperextension.ItemTouchHelperExtension;
 import com.tianbin.theoldreaderapp.R;
 import com.tianbin.theoldreaderapp.data.module.SubscriptionList;
 import com.tianbin.theoldreaderapp.ui.base.BaseFragment;
@@ -19,8 +21,10 @@ import butterknife.BindView;
  * class des
  * Created by tianbin on 16/11/12.
  */
-
 public class SubscriptionDetailFragment extends BaseFragment {
+
+    private ItemTouchHelperCallback mCallback;
+    private ItemTouchHelperExtension mItemTouchHelper;
 
     public static void start(Context context, SubscriptionList.Entity entity) {
         Bundle bundle = new Bundle();
@@ -39,11 +43,6 @@ public class SubscriptionDetailFragment extends BaseFragment {
     private SubscriptionList.Entity mEntity;
 
     @Override
-    protected int getLayoutResId() {
-        return R.layout.fragment_subscription_detail;
-    }
-
-    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -51,9 +50,33 @@ public class SubscriptionDetailFragment extends BaseFragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected int getLayoutResId() {
+        return 0;
+    }
 
+
+    public class ItemTouchHelperCallback extends ItemTouchHelperExtension.Callback {
+
+        @Override
+        public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+            return makeMovementFlags(0, ItemTouchHelper.START);
+        }
+
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+
+        }
+
+        @Override
+        public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            //MainRecyclerAdapter.ItemBaseViewHolder holder = (MainRecyclerAdapter.ItemBaseViewHolder) viewHolder;
+            //holder.mViewContent.setTranslationX(dX);
+        }
     }
 
 }

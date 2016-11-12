@@ -3,7 +3,7 @@ package com.tianbin.theoldreaderapp.presenter.blog;
 import android.support.annotation.NonNull;
 
 import com.tianbin.theoldreaderapp.common.wrapper.AppLog;
-import com.tianbin.theoldreaderapp.contract.blog.NewsContract;
+import com.tianbin.theoldreaderapp.contract.blog.BlogListContract;
 import com.tianbin.theoldreaderapp.data.api.BlogApi;
 import com.tianbin.theoldreaderapp.data.module.BlogIdItemList;
 import com.tianbin.theoldreaderapp.data.module.BlogList;
@@ -24,16 +24,16 @@ import rx.schedulers.Schedulers;
  * news presenter
  * Created by tianbin on 16/11/3.
  */
-public class NewsPresenter implements NewsContract.Presenter {
+public class LastBlogListPresenter implements BlogListContract.Presenter {
 
-    private NewsContract.View mView;
+    private BlogListContract.View mView;
 
     private long mContinuation;
 
     BlogApi mBlogApi;
 
     @Inject
-    public NewsPresenter(BlogApi blogApi) {
+    public LastBlogListPresenter(BlogApi blogApi) {
         mBlogApi = blogApi;
         mContinuation = getTimeInSecond();
     }
@@ -43,7 +43,7 @@ public class NewsPresenter implements NewsContract.Presenter {
     }
 
     @Override
-    public void attachView(NewsContract.View view) {
+    public void attachView(BlogListContract.View view) {
         mView = view;
     }
 
@@ -53,7 +53,7 @@ public class NewsPresenter implements NewsContract.Presenter {
     }
 
     @Override
-    public void fetchAllBlog(final NewsContract.FetchType type) {
+    public void fetchAllBlog(final BlogListContract.FetchType type) {
         AppLog.d("fetch all blog --- " + type.toString());
         mBlogApi.getBlogList(mContinuation)
                 .subscribeOn(Schedulers.io())
@@ -93,7 +93,7 @@ public class NewsPresenter implements NewsContract.Presenter {
     }
 
     @Override
-    public void fetchUnReadBlog(final NewsContract.FetchType type) {
+    public void fetchUnReadBlog(final BlogListContract.FetchType type) {
         mBlogApi.getUnReadItemIds()
                 .subscribeOn(Schedulers.io())
                 .map(new Func1<BlogIdItemList, List<String>>() {

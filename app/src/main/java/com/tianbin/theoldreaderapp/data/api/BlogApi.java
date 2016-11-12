@@ -20,4 +20,6 @@ public interface BlogApi {
     Observable<BlogIdItemList> getUnReadItemIds();
 
     Observable<BlogList> getUnReadContents(List<String> idList);
+
+    Observable<BlogIdItemList> getSubscriptionBlogIds(String subscriptionId);
 }

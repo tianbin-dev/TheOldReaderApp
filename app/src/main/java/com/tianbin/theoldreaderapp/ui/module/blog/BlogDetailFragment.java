@@ -15,14 +15,14 @@ import com.tianbin.theoldreaderapp.ui.base.WebViewBaseFragment;
  * detail fragment
  * Created by tianbin on 16/11/4.
  */
-public class DetailFragment extends WebViewBaseFragment {
+public class BlogDetailFragment extends WebViewBaseFragment {
 
     private static final String BLOG_URL = "blog_url";
 
     public static void start(Context context, String blogUrl) {
         Bundle bundle = new Bundle();
         bundle.putString(BLOG_URL, blogUrl);
-        Intent intent = SimpleFragmentActivity.newIntent(context, "详情", DetailFragment.class, bundle);
+        Intent intent = SimpleFragmentActivity.newIntent(context, "详情", BlogDetailFragment.class, bundle);
         context.startActivity(intent);
     }
 

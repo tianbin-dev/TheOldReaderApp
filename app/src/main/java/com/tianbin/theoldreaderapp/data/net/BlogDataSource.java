@@ -43,4 +43,9 @@ public class BlogDataSource implements BlogApi {
     public Observable<BlogList> getUnReadContents(List<String> idList) {
         return mBlogService.getUnReadContents(idList);
     }
+
+    @Override
+    public Observable<BlogIdItemList> getSubscriptionBlogIds(String subscriptionId) {
+        return mBlogService.getSubscriptionBlogIds(subscriptionId);
+    }
 }

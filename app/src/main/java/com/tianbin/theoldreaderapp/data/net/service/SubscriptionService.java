@@ -13,6 +13,4 @@ public interface SubscriptionService {
 
     @GET("/reader/api/0/subscription/list")
     Observable<SubscriptionList> getSubscriptionList();
-
-
 }

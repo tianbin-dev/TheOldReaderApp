@@ -19,6 +19,7 @@ import com.tianbin.theoldreaderapp.data.module.SubscriptionList;
 import com.tianbin.theoldreaderapp.di.component.MainComponent;
 import com.tianbin.theoldreaderapp.presenter.subscription.SubscriptionPresenter;
 import com.tianbin.theoldreaderapp.ui.base.BaseFragment;
+import com.tianbin.theoldreaderapp.ui.module.blog.SubscriptionBlogListFragment;
 import com.tianbin.theoldreaderapp.ui.module.subscription.adapter.SubscriptionAdapter;
 
 import java.util.List;
@@ -84,7 +85,7 @@ public class SubscriptionFragment extends BaseFragment implements SubscriptionCo
             public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int position) {
                 SubscriptionAdapter subscriptionAdapter = (SubscriptionAdapter) baseQuickAdapter;
                 SubscriptionList.Entity entity = subscriptionAdapter.getData().get(position);
-                SubscriptionDetailFragment.start(getContext(), entity);
+                SubscriptionBlogListFragment.start(getContext(), entity);
             }
         });
     }

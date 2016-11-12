@@ -28,5 +28,6 @@ public interface BlogService {
     @GET("/reader/api/0/stream/items/contents")
     Observable<BlogList> getUnReadContents(@Query("i") List<String> idList);
 
-
+    @GET("/reader/api/0/stream/items/ids")
+    Observable<BlogIdItemList> getSubscriptionBlogIds(@Query("s") String subscriptionId);
 }

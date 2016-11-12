@@ -15,10 +15,8 @@ import android.widget.Toast;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.tianbin.theoldreaderapp.R;
-import com.tianbin.theoldreaderapp.contract.blog.NewsContract;
+import com.tianbin.theoldreaderapp.contract.blog.BlogListContract;
 import com.tianbin.theoldreaderapp.data.module.BlogList;
-import com.tianbin.theoldreaderapp.di.component.MainComponent;
-import com.tianbin.theoldreaderapp.presenter.blog.NewsPresenter;
 import com.tianbin.theoldreaderapp.ui.base.BaseFragment;
 import com.tianbin.theoldreaderapp.ui.module.blog.adapter.NewsAdapter;
 
@@ -32,7 +30,7 @@ import butterknife.BindView;
  * news fragment
  * Created by tianbin on 16/11/3.
  */
-public class NewsFragment extends BaseFragment implements NewsContract.View, SwipeRefreshLayout.OnRefreshListener {
+public abstract class BlogListBaseFragment extends BaseFragment implements BlogListContract.View, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.news_recycler_view)
     RecyclerView mNewsRecyclerView;
@@ -40,9 +38,8 @@ public class NewsFragment extends BaseFragment implements NewsContract.View, Swi
     SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Inject
-    NewsPresenter mNewsPresenter;
-    @Inject
     NewsAdapter mNewsAdapter;
+    private BlogListContract.Presenter mPresenter;
 
     @Override
     protected int getLayoutResId() {
@@ -52,15 +49,15 @@ public class NewsFragment extends BaseFragment implements NewsContract.View, Swi
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getComponent(MainComponent.class).inject(this);
 
-        mNewsPresenter.attachView(this);
+        mPresenter = getPresenter();
+        mPresenter.attachView(this);
 
         mSwipeRefreshLayout.setOnRefreshListener(this);
         initAdapter();
         initRecyclerView();
 
-        mNewsPresenter.fetchUnReadBlog(NewsContract.FetchType.INIT);
+        mPresenter.fetchUnReadBlog(BlogListContract.FetchType.INIT);
         mSwipeRefreshLayout.setRefreshing(true);
     }
 
@@ -69,7 +66,7 @@ public class NewsFragment extends BaseFragment implements NewsContract.View, Swi
         mNewsAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                mNewsPresenter.fetchUnReadBlog(NewsContract.FetchType.LOAD_MORE);
+                mPresenter.fetchUnReadBlog(BlogListContract.FetchType.LOAD_MORE);
             }
         });
         addLoadingView();
@@ -101,15 +98,15 @@ public class NewsFragment extends BaseFragment implements NewsContract.View, Swi
             public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int position) {
                 NewsAdapter newsAdapter = (NewsAdapter) baseQuickAdapter;
                 String href = newsAdapter.getData().get(position).getCanonical().get(0).getHref();
-                DetailFragment.start(view.getContext(), href);
+                BlogDetailFragment.start(view.getContext(), href);
             }
         });
     }
 
     @Override
     public void onRefresh() {
-        if (mNewsPresenter != null && !mNewsAdapter.isLoading()) {
-            mNewsPresenter.fetchUnReadBlog(NewsContract.FetchType.REFRESH);
+        if (mPresenter != null && !mNewsAdapter.isLoading()) {
+            mPresenter.fetchUnReadBlog(BlogListContract.FetchType.REFRESH);
         }
     }
 
@@ -161,4 +158,6 @@ public class NewsFragment extends BaseFragment implements NewsContract.View, Swi
     public List<BlogList.ItemEntity> getData() {
         return mNewsAdapter.getData();
     }
+
+    public abstract BlogListContract.Presenter getPresenter();
 }
