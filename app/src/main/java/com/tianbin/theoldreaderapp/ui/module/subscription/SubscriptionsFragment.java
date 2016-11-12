@@ -2,7 +2,7 @@ package com.tianbin.theoldreaderapp.ui.module.subscription;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +13,7 @@ import com.tianbin.theoldreaderapp.data.module.SubscriptionList;
 import com.tianbin.theoldreaderapp.di.component.MainComponent;
 import com.tianbin.theoldreaderapp.presenter.subscription.SubscriptionPresenter;
 import com.tianbin.theoldreaderapp.ui.base.BaseFragment;
+import com.tianbin.theoldreaderapp.ui.module.subscription.adapter.SubscriptionsAdapter;
 
 import javax.inject.Inject;
 
@@ -25,11 +26,13 @@ import butterknife.ButterKnife;
  */
 public class SubscriptionsFragment extends BaseFragment implements SubscriptionContract.View {
 
-    @BindView(R.id.tool_bar)
-    Toolbar mToolBar;
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerView;
 
     @Inject
     SubscriptionPresenter mSubscriptionPresenter;
+    @Inject
+    SubscriptionsAdapter subscriptionsAdapter;
 
     @Override
     protected int getLayoutResId() {
@@ -47,8 +50,13 @@ public class SubscriptionsFragment extends BaseFragment implements SubscriptionC
         super.onViewCreated(view, savedInstanceState);
 
         mSubscriptionPresenter.attachView(this);
-
         mSubscriptionPresenter.fetchSubscriptions();
+
+        initAdapter();
+    }
+
+    private void initAdapter() {
+
     }
 
 

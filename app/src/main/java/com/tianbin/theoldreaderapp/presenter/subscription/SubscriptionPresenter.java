@@ -19,16 +19,16 @@ public class SubscriptionPresenter implements SubscriptionContract.Presenter {
 
     private SubscriptionContract.View mView;
 
-    SubscriptionApi mSubscriptionDataService;
+    SubscriptionApi mSubscriptionApi;
 
     @Inject
-    public SubscriptionPresenter(SubscriptionApi subscriptionDataService) {
-        mSubscriptionDataService = subscriptionDataService;
+    public SubscriptionPresenter(SubscriptionApi subscriptionApi) {
+        mSubscriptionApi = subscriptionApi;
     }
 
     @Override
     public void fetchSubscriptions() {
-        mSubscriptionDataService.getSubscriptionList()
+        mSubscriptionApi.getSubscriptionList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ResponseObserver<SubscriptionList>() {

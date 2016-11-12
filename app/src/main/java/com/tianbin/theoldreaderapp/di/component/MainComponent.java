@@ -1,7 +1,6 @@
 package com.tianbin.theoldreaderapp.di.component;
 
 import com.tianbin.theoldreaderapp.PerActivity;
-import com.tianbin.theoldreaderapp.data.api.BlogApi;
 import com.tianbin.theoldreaderapp.data.api.SubscriptionApi;
 import com.tianbin.theoldreaderapp.di.module.ActivityModule;
 import com.tianbin.theoldreaderapp.di.module.BlogModule;
@@ -22,9 +21,8 @@ public interface MainComponent {
 
     void inject(SubscriptionApi subscriptionApi);
 
-    void inject(BlogApi blogApi);
-
     void inject(SubscriptionsFragment subscriptionsFragment);
 
     void inject(NewsFragment newsFragment);
+
 }

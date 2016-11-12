@@ -32,7 +32,7 @@ import butterknife.BindView;
  * news fragment
  * Created by tianbin on 16/11/3.
  */
-public class NewsFragment extends BaseFragment implements NewsContract.View, SwipeRefreshLayout.OnRefreshListener{
+public class NewsFragment extends BaseFragment implements NewsContract.View, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.news_recycler_view)
     RecyclerView mNewsRecyclerView;
@@ -41,8 +41,8 @@ public class NewsFragment extends BaseFragment implements NewsContract.View, Swi
 
     @Inject
     NewsPresenter mNewsPresenter;
-
-    private BaseQuickAdapter mNewsAdapter;
+    @Inject
+    NewsAdapter mNewsAdapter;
 
     @Override
     protected int getLayoutResId() {
@@ -65,7 +65,6 @@ public class NewsFragment extends BaseFragment implements NewsContract.View, Swi
     }
 
     private void initAdapter() {
-        mNewsAdapter = new NewsAdapter();
         mNewsAdapter.openLoadMore(20);
         mNewsAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override

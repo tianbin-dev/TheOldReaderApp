@@ -5,12 +5,15 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.tianbin.theoldreaderapp.R;
 import com.tianbin.theoldreaderapp.data.module.BlogList;
 
+import javax.inject.Inject;
+
 /**
  * news adapter
  * Created by tianbin on 16/11/4.
  */
 public class NewsAdapter extends BaseQuickAdapter<BlogList.ItemEntity> {
 
+    @Inject
     public NewsAdapter() {
         super(R.layout.holder_at_blog, null);
     }

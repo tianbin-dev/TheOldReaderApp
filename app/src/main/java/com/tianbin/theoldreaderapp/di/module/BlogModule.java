@@ -14,7 +14,8 @@ import dagger.Provides;
 public class BlogModule {
 
     @Provides
-    BlogApi provideSubscriptionApi(BlogDataSource blogDataSource) {
+    BlogApi provideBlogApi(BlogDataSource blogDataSource) {
         return blogDataSource;
     }
+
 }
