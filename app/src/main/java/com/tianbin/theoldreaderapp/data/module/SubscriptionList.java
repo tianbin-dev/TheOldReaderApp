@@ -2,13 +2,14 @@ package com.tianbin.theoldreaderapp.data.module;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * subscription list
  * Created by tianbin on 16/11/3.
  */
-public class SubscriptionList {
+public class SubscriptionList implements Serializable {
 
     @SerializedName("subscriptions")
     private List<Entity> mSubscriptions;
@@ -21,7 +22,7 @@ public class SubscriptionList {
         mSubscriptions = subscriptions;
     }
 
-    public static class Entity {
+    public static class Entity implements Serializable {
         @SerializedName("id")
         private String mId;
         @SerializedName("title")
@@ -103,7 +104,7 @@ public class SubscriptionList {
             mCategories = categories;
         }
 
-        public static class CategoriesEntity {
+        public static class CategoriesEntity implements Serializable{
             @SerializedName("id")
             private String mId;
             @SerializedName("label")

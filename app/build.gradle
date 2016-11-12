@@ -78,4 +78,7 @@ dependencies {
     compile "com.google.dagger:dagger:$DAGGER_VERSION"
     apt "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
     provided 'org.glassfish:javax.annotation:10.0-b28'
+
+    // https://github.com/loopeer/itemtouchhelper-extension
+    compile 'com.loopeer.library:itemtouchhelperextension:1.0.1'
 }

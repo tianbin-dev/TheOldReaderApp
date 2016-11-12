@@ -19,7 +19,7 @@ import com.tianbin.theoldreaderapp.data.module.SubscriptionList;
 import com.tianbin.theoldreaderapp.di.component.MainComponent;
 import com.tianbin.theoldreaderapp.presenter.subscription.SubscriptionPresenter;
 import com.tianbin.theoldreaderapp.ui.base.BaseFragment;
-import com.tianbin.theoldreaderapp.ui.module.subscription.adapter.SubscriptionsAdapter;
+import com.tianbin.theoldreaderapp.ui.module.subscription.adapter.SubscriptionAdapter;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ import butterknife.ButterKnife;
  * subscription fragment
  * Created by tianbin on 16/11/4.
  */
-public class SubscriptionsFragment extends BaseFragment implements SubscriptionContract.View, SwipeRefreshLayout.OnRefreshListener {
+public class SubscriptionFragment extends BaseFragment implements SubscriptionContract.View, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
@@ -42,7 +42,7 @@ public class SubscriptionsFragment extends BaseFragment implements SubscriptionC
     @Inject
     SubscriptionPresenter mSubscriptionPresenter;
     @Inject
-    SubscriptionsAdapter mSubscriptionsAdapter;
+    SubscriptionAdapter mSubscriptionAdapter;
 
 
     @Override
@@ -76,20 +76,22 @@ public class SubscriptionsFragment extends BaseFragment implements SubscriptionC
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),
                 linearLayoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
-        mRecyclerView.setAdapter(mSubscriptionsAdapter);
+        mRecyclerView.setAdapter(mSubscriptionAdapter);
         mRecyclerView.setClipToPadding(false);
 
         mRecyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
             @Override
             public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int position) {
-
+                SubscriptionAdapter subscriptionAdapter = (SubscriptionAdapter) baseQuickAdapter;
+                SubscriptionList.Entity entity = subscriptionAdapter.getData().get(position);
+                SubscriptionDetailFragment.start(getContext(), entity);
             }
         });
     }
 
     @Override
     public void fetchSubscriptionsSuccess(List<SubscriptionList.Entity> subscriptionList) {
-        mSubscriptionsAdapter.setNewData(subscriptionList);
+        mSubscriptionAdapter.setNewData(subscriptionList);
         mSwipeRefreshLayout.setRefreshing(false);
     }
 

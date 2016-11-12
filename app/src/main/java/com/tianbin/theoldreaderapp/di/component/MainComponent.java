@@ -6,7 +6,7 @@ import com.tianbin.theoldreaderapp.di.module.ActivityModule;
 import com.tianbin.theoldreaderapp.di.module.BlogModule;
 import com.tianbin.theoldreaderapp.di.module.SubscriptionModule;
 import com.tianbin.theoldreaderapp.ui.module.blog.NewsFragment;
-import com.tianbin.theoldreaderapp.ui.module.subscription.SubscriptionsFragment;
+import com.tianbin.theoldreaderapp.ui.module.subscription.SubscriptionFragment;
 
 import dagger.Component;
 
@@ -21,7 +21,7 @@ public interface MainComponent {
 
     void inject(SubscriptionApi subscriptionApi);
 
-    void inject(SubscriptionsFragment subscriptionsFragment);
+    void inject(SubscriptionFragment subscriptionFragment);
 
     void inject(NewsFragment newsFragment);
 

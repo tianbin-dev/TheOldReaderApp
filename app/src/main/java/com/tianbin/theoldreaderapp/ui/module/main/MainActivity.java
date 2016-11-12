@@ -18,7 +18,7 @@ import com.tianbin.theoldreaderapp.di.component.MainComponent;
 import com.tianbin.theoldreaderapp.ui.module.account.FavouriteFragment;
 import com.tianbin.theoldreaderapp.ui.module.account.ProfileFragment;
 import com.tianbin.theoldreaderapp.ui.module.blog.NewsFragment;
-import com.tianbin.theoldreaderapp.ui.module.subscription.SubscriptionsFragment;
+import com.tianbin.theoldreaderapp.ui.module.subscription.SubscriptionFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Main
             case R.id.action_news_list:
                 return NewsFragment.class.getName();
             case R.id.action_subscription_list:
-                return SubscriptionsFragment.class.getName();
+                return SubscriptionFragment.class.getName();
             case R.id.action_fav_list:
                 return FavouriteFragment.class.getName();
             case R.id.action_profile:
