@@ -21,6 +21,7 @@ public class SubscriptionsAdapter extends BaseQuickAdapter<SubscriptionList.Enti
 
     @Override
     protected void convert(BaseViewHolder baseViewHolder, SubscriptionList.Entity entity) {
-
+        baseViewHolder.setText(R.id.tv_subscription_name, entity.getTitle());
+        baseViewHolder.setText(R.id.tv_html_url,entity.getHtmlUrl());
     }
 }

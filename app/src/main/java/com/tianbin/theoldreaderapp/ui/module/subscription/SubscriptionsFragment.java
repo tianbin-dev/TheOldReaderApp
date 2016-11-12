@@ -2,11 +2,17 @@ package com.tianbin.theoldreaderapp.ui.module.subscription;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.tianbin.theoldreaderapp.R;
 import com.tianbin.theoldreaderapp.contract.subscription.SubscriptionContract;
 import com.tianbin.theoldreaderapp.data.module.SubscriptionList;
@@ -14,6 +20,8 @@ import com.tianbin.theoldreaderapp.di.component.MainComponent;
 import com.tianbin.theoldreaderapp.presenter.subscription.SubscriptionPresenter;
 import com.tianbin.theoldreaderapp.ui.base.BaseFragment;
 import com.tianbin.theoldreaderapp.ui.module.subscription.adapter.SubscriptionsAdapter;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -24,15 +32,18 @@ import butterknife.ButterKnife;
  * subscription fragment
  * Created by tianbin on 16/11/4.
  */
-public class SubscriptionsFragment extends BaseFragment implements SubscriptionContract.View {
+public class SubscriptionsFragment extends BaseFragment implements SubscriptionContract.View, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Inject
     SubscriptionPresenter mSubscriptionPresenter;
     @Inject
-    SubscriptionsAdapter subscriptionsAdapter;
+    SubscriptionsAdapter mSubscriptionsAdapter;
+
 
     @Override
     protected int getLayoutResId() {
@@ -49,25 +60,43 @@ public class SubscriptionsFragment extends BaseFragment implements SubscriptionC
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+
+        initRecyclerView();
+
         mSubscriptionPresenter.attachView(this);
         mSubscriptionPresenter.fetchSubscriptions();
 
-        initAdapter();
+        mSwipeRefreshLayout.setRefreshing(true);
     }
 
-    private void initAdapter() {
+    private void initRecyclerView() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),
+                linearLayoutManager.getOrientation());
+        mRecyclerView.addItemDecoration(dividerItemDecoration);
+        mRecyclerView.setAdapter(mSubscriptionsAdapter);
+        mRecyclerView.setClipToPadding(false);
 
+        mRecyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
+            @Override
+            public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int position) {
+
+            }
+        });
     }
-
 
     @Override
-    public void fetchSubscriptionsSuccess(SubscriptionList subscriptionList) {
-
+    public void fetchSubscriptionsSuccess(List<SubscriptionList.Entity> subscriptionList) {
+        mSubscriptionsAdapter.setNewData(subscriptionList);
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void fetchSubscriptionsFail() {
-
+        Toast.makeText(getContext(), "数据加载失败", Toast.LENGTH_LONG).show();
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -76,5 +105,10 @@ public class SubscriptionsFragment extends BaseFragment implements SubscriptionC
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
         return rootView;
+    }
+
+    @Override
+    public void onRefresh() {
+        mSubscriptionPresenter.fetchSubscriptions();
     }
 }

@@ -34,13 +34,13 @@ public class SubscriptionPresenter implements SubscriptionContract.Presenter {
                 .subscribe(new ResponseObserver<SubscriptionList>() {
                     @Override
                     public void onSuccess(SubscriptionList subscriptionList) {
-                        AppLog.d("fetch subscription success");
-
+                        mView.fetchSubscriptionsSuccess(subscriptionList.getSubscriptions());
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         AppLog.d("fetch subscription failed " + e.toString());
+                        mView.fetchSubscriptionsFail();
                     }
                 });
 
