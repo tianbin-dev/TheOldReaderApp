@@ -1,7 +1,5 @@
 package com.tianbin.theoldreaderapp.presenter.blog;
 
-import android.support.annotation.NonNull;
-
 import com.tianbin.theoldreaderapp.common.wrapper.AppLog;
 import com.tianbin.theoldreaderapp.contract.blog.BlogListContract;
 import com.tianbin.theoldreaderapp.data.api.BlogApi;
@@ -9,7 +7,6 @@ import com.tianbin.theoldreaderapp.data.module.BlogIdItemList;
 import com.tianbin.theoldreaderapp.data.module.BlogList;
 import com.tianbin.theoldreaderapp.data.rx.ResponseObserver;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -24,13 +21,7 @@ import rx.schedulers.Schedulers;
  * news presenter
  * Created by tianbin on 16/11/3.
  */
-public class LastBlogListPresenter implements BlogListContract.Presenter {
-
-    private BlogListContract.View mView;
-
-    private long mContinuation;
-
-    BlogApi mBlogApi;
+public class LastBlogListPresenter extends BlogListBasePresenter implements BlogListContract.Presenter {
 
     @Inject
     public LastBlogListPresenter(BlogApi blogApi) {
@@ -53,47 +44,7 @@ public class LastBlogListPresenter implements BlogListContract.Presenter {
     }
 
     @Override
-    public void fetchAllBlog(final BlogListContract.FetchType type) {
-        AppLog.d("fetch all blog --- " + type.toString());
-        mBlogApi.getBlogList(mContinuation)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ResponseObserver<BlogList>() {
-
-                    @Override
-                    public void onError(Throwable e) {
-                        AppLog.d(e.toString());
-                        mView.fetchNewsFailed(e);
-                    }
-
-                    @Override
-                    public void onSuccess(BlogList blogList) {
-                        AppLog.d("fetch all blog success --- " + type.toString());
-
-                        mContinuation = blogList.getContinuation();
-                        switch (type) {
-                            case INIT:
-                                mView.fetchNewsSuccess(blogList.getItems());
-                                break;
-                            case REFRESH:
-                                appendNewData(blogList);
-                                mView.pullDownRefreshSuccess();
-                                break;
-                            case LOAD_MORE:
-                                AppLog.e("continuation --- " + mContinuation);
-                                if (mContinuation != 0) {
-                                    mView.loadMoreNewsSuccess(blogList.getItems());
-                                } else {
-                                    mView.loadMoreNewsCompleted();
-                                }
-                                break;
-                        }
-                    }
-                });
-    }
-
-    @Override
-    public void fetchUnReadBlog(final BlogListContract.FetchType type) {
+    public void fetchBlogs(final BlogListContract.FetchType type) {
         mBlogApi.getUnReadItemIds()
                 .subscribeOn(Schedulers.io())
                 .map(new Func1<BlogIdItemList, List<String>>() {
@@ -141,33 +92,5 @@ public class LastBlogListPresenter implements BlogListContract.Presenter {
                     }
                 });
 
-    }
-
-    @NonNull
-    private List<String> getBlogIdList(BlogIdItemList blogIdItemList) {
-        List<BlogIdItemList.BlogIdItem> blogIdItems = blogIdItemList.getItemRefs();
-
-        List<String> idList = new ArrayList<>();
-        if (blogIdItems != null && blogIdItems.size() > 0) {
-            for (BlogIdItemList.BlogIdItem blogIdItem : blogIdItems) {
-                idList.add("tag:google.com,2005:reader/item/" + blogIdItem.getId());
-            }
-        }
-        return idList;
-    }
-
-    private void appendNewData(BlogList blogList) {
-        List<BlogList.ItemEntity> data = mView.getData();
-        List<BlogList.ItemEntity> items = blogList.getItems();
-
-        List<BlogList.ItemEntity> newBlogItems = new ArrayList<>();
-        for (BlogList.ItemEntity item : items) {
-            if (!data.contains(item)) {
-                newBlogItems.add(item);
-            } else {
-                break;
-            }
-        }
-        data.addAll(newBlogItems);
     }
 }

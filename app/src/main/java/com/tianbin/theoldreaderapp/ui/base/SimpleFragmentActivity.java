@@ -10,14 +10,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jaeger.library.StatusBarUtil;
+import com.tianbin.theoldreaderapp.HasComponent;
+import com.tianbin.theoldreaderapp.MyApplication;
 import com.tianbin.theoldreaderapp.R;
+import com.tianbin.theoldreaderapp.di.component.DaggerSimpleFragmentComponent;
+import com.tianbin.theoldreaderapp.di.component.SimpleFragmentComponent;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class SimpleFragmentActivity extends AppCompatActivity {
+public class SimpleFragmentActivity extends AppCompatActivity implements HasComponent<SimpleFragmentComponent>{
     private static final String FRAGMENT_TITLE = "fragment_title";
     private static final String FRAGMENT_CLASS_NAME = "fragment_class_name";
     private static final String FRAGMENT_ARGUMENTS = "fragment_arguments";
@@ -42,6 +46,8 @@ public class SimpleFragmentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_simple_fragment);
         StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary));
         mUnbinder = ButterKnife.bind(this);
@@ -123,5 +129,12 @@ public class SimpleFragmentActivity extends AppCompatActivity {
         if (!getSupportFragmentManager().popBackStackImmediate()) {
             supportFinishAfterTransition();
         }
+    }
+
+    @Override
+    public SimpleFragmentComponent getComponent() {
+        return DaggerSimpleFragmentComponent.builder()
+                .applicationComponent(MyApplication.get(this).getComponent())
+                .build();
     }
 }

@@ -57,7 +57,7 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
         initAdapter();
         initRecyclerView();
 
-        mPresenter.fetchUnReadBlog(BlogListContract.FetchType.INIT);
+        mPresenter.fetchBlogs(BlogListContract.FetchType.INIT);
         mSwipeRefreshLayout.setRefreshing(true);
     }
 
@@ -66,7 +66,7 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
         mNewsAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                mPresenter.fetchUnReadBlog(BlogListContract.FetchType.LOAD_MORE);
+                mPresenter.fetchBlogs(BlogListContract.FetchType.LOAD_MORE);
             }
         });
         addLoadingView();
@@ -106,7 +106,7 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
     @Override
     public void onRefresh() {
         if (mPresenter != null && !mNewsAdapter.isLoading()) {
-            mPresenter.fetchUnReadBlog(BlogListContract.FetchType.REFRESH);
+            mPresenter.fetchBlogs(BlogListContract.FetchType.REFRESH);
         }
     }
 

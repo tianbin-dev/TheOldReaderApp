@@ -29,9 +29,7 @@ public interface BlogListContract {
 
     interface Presenter extends MvpPresenter<View> {
 
-        void fetchAllBlog(FetchType type);
-
-        void fetchUnReadBlog(FetchType type);
+        void fetchBlogs(FetchType type);
     }
 
     enum FetchType {
