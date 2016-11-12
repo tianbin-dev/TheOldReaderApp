@@ -4,12 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.tianbin.theoldreaderapp.contract.blog.BlogListContract;
 import com.tianbin.theoldreaderapp.data.module.SubscriptionList;
 import com.tianbin.theoldreaderapp.di.component.SimpleFragmentComponent;
 import com.tianbin.theoldreaderapp.presenter.blog.SubscriptionBlogListPresenter;
 import com.tianbin.theoldreaderapp.ui.base.SimpleFragmentActivity;
+import com.tianbin.theoldreaderapp.ui.module.blog.adapter.SubscriptionBlogListAdapter;
 
 import javax.inject.Inject;
 
@@ -21,6 +25,9 @@ public class SubscriptionBlogListFragment extends BlogListBaseFragment {
 
     @Inject
     SubscriptionBlogListPresenter mSubscriptionBlogListPresenter;
+
+    @Inject
+    SubscriptionBlogListAdapter mSubscriptionBlogListAdapter;
 
     private SubscriptionList.Entity mEntity;
 
@@ -36,6 +43,23 @@ public class SubscriptionBlogListFragment extends BlogListBaseFragment {
     @Override
     public BlogListContract.Presenter getPresenter() {
         return mSubscriptionBlogListPresenter;
+    }
+
+    @Override
+    public BaseQuickAdapter getAdapter() {
+        return mSubscriptionBlogListAdapter;
+    }
+
+    @Override
+    public void addItemClickListener() {
+        mNewsRecyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
+            @Override
+            public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int position) {
+                SubscriptionBlogListAdapter subscriptionBlogListAdapter = (SubscriptionBlogListAdapter) baseQuickAdapter;
+                String href = subscriptionBlogListAdapter.getData().get(position).getCanonical().get(0).getHref();
+                jumpToBlogDetailFragment(view, href);
+            }
+        });
     }
 
     @Override

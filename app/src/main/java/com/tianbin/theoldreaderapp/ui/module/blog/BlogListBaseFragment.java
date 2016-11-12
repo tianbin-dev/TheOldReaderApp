@@ -13,16 +13,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.tianbin.theoldreaderapp.R;
 import com.tianbin.theoldreaderapp.contract.blog.BlogListContract;
 import com.tianbin.theoldreaderapp.data.module.BlogList;
 import com.tianbin.theoldreaderapp.ui.base.BaseFragment;
-import com.tianbin.theoldreaderapp.ui.module.blog.adapter.NewsAdapter;
 
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 
@@ -37,8 +33,7 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    @Inject
-    NewsAdapter mNewsAdapter;
+    private BaseQuickAdapter mBaseQuickAdapter;
     private BlogListContract.Presenter mPresenter;
 
     @Override
@@ -62,8 +57,9 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
     }
 
     private void initAdapter() {
-        mNewsAdapter.openLoadMore(20);
-        mNewsAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+        mBaseQuickAdapter = getAdapter();
+        mBaseQuickAdapter.openLoadMore(20);
+        mBaseQuickAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
                 mPresenter.fetchBlogs(BlogListContract.FetchType.LOAD_MORE);
@@ -81,7 +77,7 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
         int viewHeight = getResources().getDimensionPixelSize(R.dimen.loading_view_height);
         LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, viewHeight);
         textView.setLayoutParams(layoutParams);
-        mNewsAdapter.setLoadingView(textView);
+        mBaseQuickAdapter.setLoadingView(textView);
     }
 
     private void initRecyclerView() {
@@ -90,31 +86,24 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),
                 linearLayoutManager.getOrientation());
         mNewsRecyclerView.addItemDecoration(dividerItemDecoration);
-        mNewsRecyclerView.setAdapter(mNewsAdapter);
+        mNewsRecyclerView.setAdapter(mBaseQuickAdapter);
         mNewsRecyclerView.setClipToPadding(false);
 
-        mNewsRecyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
-            @Override
-            public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int position) {
-                NewsAdapter newsAdapter = (NewsAdapter) baseQuickAdapter;
-                String href = newsAdapter.getData().get(position).getCanonical().get(0).getHref();
-                BlogDetailFragment.start(view.getContext(), href);
-            }
-        });
+        addItemClickListener();
     }
 
     @Override
     public void onRefresh() {
-        if (mPresenter != null && !mNewsAdapter.isLoading()) {
+        if (mPresenter != null && !mBaseQuickAdapter.isLoading()) {
             mPresenter.fetchBlogs(BlogListContract.FetchType.REFRESH);
         }
     }
 
     @Override
     public void fetchNewsSuccess(List<BlogList.ItemEntity> blogList) {
-        if (mNewsAdapter != null) {
-            mNewsAdapter.setNewData(blogList);
-            mNewsAdapter.notifyDataSetChanged();
+        if (mBaseQuickAdapter != null) {
+            mBaseQuickAdapter.setNewData(blogList);
+            mBaseQuickAdapter.notifyDataSetChanged();
         }
         dismissSwipeRefreshLayout();
     }
@@ -135,29 +124,37 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
 
     @Override
     public void loadMoreNewsSuccess(List<BlogList.ItemEntity> blogList) {
-        if (mNewsAdapter != null) {
-            mNewsAdapter.addData(blogList);
+        if (mBaseQuickAdapter != null) {
+            mBaseQuickAdapter.addData(blogList);
         }
     }
 
     @Override
     public void loadMoreNewsCompleted() {
-        mNewsAdapter.loadComplete();
+        mBaseQuickAdapter.loadComplete();
         Toast.makeText(getContext(), "no more data", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void pullDownRefreshSuccess() {
-        if (mNewsAdapter != null) {
-            mNewsAdapter.notifyDataSetChanged();
+        if (mBaseQuickAdapter != null) {
+            mBaseQuickAdapter.notifyDataSetChanged();
         }
         dismissSwipeRefreshLayout();
     }
 
     @Override
     public List<BlogList.ItemEntity> getData() {
-        return mNewsAdapter.getData();
+        return mBaseQuickAdapter.getData();
+    }
+
+    protected void jumpToBlogDetailFragment(View view, String href) {
+        BlogDetailFragment.start(view.getContext(), href);
     }
 
     public abstract BlogListContract.Presenter getPresenter();
+
+    public abstract BaseQuickAdapter getAdapter();
+
+    public abstract void addItemClickListener();
 }
