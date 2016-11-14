@@ -35,8 +35,8 @@ public class BlogDataSource implements BlogApi {
     }
 
     @Override
-    public Observable<BlogIdItemList> getUnReadItemIds() {
-        return mBlogService.getUnReadItemIds();
+    public Observable<BlogIdItemList> getUnReadItemIds(long continuation) {
+        return mBlogService.getUnReadItemIds(continuation);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class BlogDataSource implements BlogApi {
     }
 
     @Override
-    public Observable<BlogIdItemList> getSubscriptionBlogIds(String subscriptionId) {
-        return mBlogService.getSubscriptionBlogIds(subscriptionId);
+    public Observable<BlogIdItemList> getSubscriptionBlogIds(String subscriptionId, long continuation) {
+        return mBlogService.getSubscriptionBlogIds(subscriptionId, continuation);
     }
 }

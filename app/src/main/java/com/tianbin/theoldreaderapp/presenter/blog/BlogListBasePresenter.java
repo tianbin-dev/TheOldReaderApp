@@ -58,6 +58,8 @@ public abstract class BlogListBasePresenter implements BlogListContract.Presente
                 .map(new Func1<BlogIdItemList, List<String>>() {
                     @Override
                     public List<String> call(BlogIdItemList blogIdItemList) {
+                        mContinuation = blogIdItemList.getContinuation();
+                        AppLog.d(String.valueOf(mContinuation));
                         return getBlogIdList(blogIdItemList);
                     }
                 })
@@ -73,7 +75,6 @@ public abstract class BlogListBasePresenter implements BlogListContract.Presente
                     public void onSuccess(BlogList blogList) {
                         AppLog.d("fetch unread blog success");
 
-                        mContinuation = blogList.getContinuation();
                         switch (type) {
                             case INIT:
                                 mView.fetchNewsSuccess(blogList.getItems());
@@ -118,6 +119,10 @@ public abstract class BlogListBasePresenter implements BlogListContract.Presente
     }
 
     private void appendNewData(BlogList blogList) {
+        if (blogList.getItems() == null) {
+            return;
+        }
+
         List<BlogList.ItemEntity> data = mView.getData();
         List<BlogList.ItemEntity> items = blogList.getItems();
 

@@ -12,6 +12,8 @@ public class BlogIdItemList {
 
     @SerializedName("itemRefs")
     private List<BlogIdItem> mItemRefs;
+    @SerializedName("continuation")
+    private long continuation;
 
     public List<BlogIdItem> getItemRefs() {
         return mItemRefs;
@@ -19,6 +21,14 @@ public class BlogIdItemList {
 
     public void setItemRefs(List<BlogIdItem> itemRefs) {
         mItemRefs = itemRefs;
+    }
+
+    public long getContinuation() {
+        return continuation;
+    }
+
+    public void setContinuation(long continuation) {
+        this.continuation = continuation;
     }
 
     public static class BlogIdItem {

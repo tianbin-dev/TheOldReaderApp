@@ -18,6 +18,6 @@ public class LastBlogListPresenter extends BlogListBasePresenter {
 
     @Override
     protected Observable<BlogIdItemList> getBlogItemIds() {
-        return mBlogApi.getUnReadItemIds();
+        return mBlogApi.getUnReadItemIds(mContinuation);
     }
 }

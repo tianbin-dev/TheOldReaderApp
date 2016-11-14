@@ -23,11 +23,11 @@ public interface BlogService {
     Observable markAsRead();
 
     @GET("/reader/api/0/stream/items/ids?xt=user/-/state/com.google/read&s=user/-/state/com.google/reading-list")
-    Observable<BlogIdItemList> getUnReadItemIds();
+    Observable<BlogIdItemList> getUnReadItemIds(@Query("c") long continuation);
 
     @GET("/reader/api/0/stream/items/contents")
     Observable<BlogList> getUnReadContents(@Query("i") List<String> idList);
 
     @GET("/reader/api/0/stream/items/ids")
-    Observable<BlogIdItemList> getSubscriptionBlogIds(@Query("s") String subscriptionId);
+    Observable<BlogIdItemList> getSubscriptionBlogIds(@Query("s") String subscriptionId, @Query("c") long continuation);
 }

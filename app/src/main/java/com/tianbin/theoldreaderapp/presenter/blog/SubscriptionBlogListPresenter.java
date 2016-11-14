@@ -25,6 +25,6 @@ public class SubscriptionBlogListPresenter extends BlogListBasePresenter {
 
     @Override
     protected Observable<BlogIdItemList> getBlogItemIds() {
-        return mBlogApi.getSubscriptionBlogIds(mSubscriptionId);
+        return mBlogApi.getSubscriptionBlogIds(mSubscriptionId, mContinuation);
     }
 }

@@ -1,7 +1,7 @@
 package com.tianbin.theoldreaderapp;
 
-import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 
 import com.tianbin.theoldreaderapp.di.component.ApplicationComponent;
 import com.tianbin.theoldreaderapp.di.component.DaggerApplicationComponent;
@@ -11,7 +11,7 @@ import com.tianbin.theoldreaderapp.di.module.ApplicationModule;
  * application
  * Created by tianbin on 16/11/3.
  */
-public class MyApplication extends Application {
+public class MyApplication extends MultiDexApplication {
 
     ApplicationComponent mApplicationComponent;
 
