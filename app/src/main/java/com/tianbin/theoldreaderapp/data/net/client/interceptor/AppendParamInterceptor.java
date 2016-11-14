@@ -34,10 +34,13 @@ public class AppendParamInterceptor implements Interceptor {
     protected Request addDefaultParameter(Request request)
             throws IOException {
         Request.Builder builder;
-        if (request.method().equals("GET")) {
+        String method = request.method();
+        if (method.equals("GET")) {
             builder = appendDefaultParameterToUrl(request);
-        } else {
+        } else if (method.equals("POST")) {
             builder = addDefaultParameterToBody(request);
+        } else {
+            builder = request.newBuilder();
         }
         return builder.build();
     }
