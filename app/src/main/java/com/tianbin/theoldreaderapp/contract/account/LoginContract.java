@@ -14,8 +14,11 @@ public interface LoginContract {
 
     interface View extends MvpView {
         Context getContext();
+
         void dissmissProgress();
+
         void loginSuccess();
+
         void showLoginFailureInfo();
     }
 
