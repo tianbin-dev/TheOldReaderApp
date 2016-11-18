@@ -17,7 +17,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppThemeNoActionBar">
         <activity
             android:name=".ui.module.main.LoginActivity"
             android:screenOrientation="portrait"
@@ -32,11 +32,9 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".ui.base.SimpleFragmentActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:name=".ui.base.SimpleFragmentActivity"/>
         <activity
-            android:name=".ui.module.blog.BlogDetailActivity"
-            android:theme="@style/AppThemeNoActionBar"/>
+            android:name=".ui.module.blog.BlogDetailActivity"/>
     </application>
 
 </manifest>

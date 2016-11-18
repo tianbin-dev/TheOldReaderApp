@@ -8,6 +8,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.tianbin.theoldreaderapp.HasComponent;
@@ -27,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Main
 
     @BindView(R.id.bottom_navigation_view)
     BottomNavigationView mBottomNavigationView;
+    @BindView(R.id.tool_bar)
+    Toolbar mToolbar;
 
     private FragmentManager mFragmentManager = getSupportFragmentManager();
 
@@ -42,6 +45,12 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Main
         ButterKnife.bind(this);
 
         initBottomNavigationView();
+        initToolBar();
+    }
+
+    private void initToolBar() {
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("最新");
     }
 
     private void initBottomNavigationView() {
@@ -81,12 +90,16 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Main
     private String getFragmentName(int menuId) {
         switch (menuId) {
             case R.id.action_news_list:
+                getSupportActionBar().setTitle("最新");
                 return LastestBlogListFragment.class.getName();
             case R.id.action_subscription_list:
+                getSupportActionBar().setTitle("全部");
                 return SubscriptionFragment.class.getName();
             case R.id.action_fav_list:
+                getSupportActionBar().setTitle("收藏");
                 return FavouriteFragment.class.getName();
             case R.id.action_profile:
+                getSupportActionBar().setTitle("我的");
                 return ProfileFragment.class.getName();
             default:
                 return null;
