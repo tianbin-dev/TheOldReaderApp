@@ -23,10 +23,9 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
- * class des
+ * BlogListBasePresenter
  * Created by tianbin on 16/11/12.
  */
-
 public abstract class BlogListBasePresenter extends RxPresenter<BlogListContract.View> implements BlogListContract.Presenter {
 
     @Inject
@@ -116,11 +115,11 @@ public abstract class BlogListBasePresenter extends RxPresenter<BlogListContract
             return;
         }
 
-        List<BlogList.ItemEntity> data = mView.getData();
-        List<BlogList.ItemEntity> items = blogList.getItems();
+        List<BlogList.Blog> data = mView.getData();
+        List<BlogList.Blog> items = blogList.getItems();
 
-        List<BlogList.ItemEntity> newBlogItems = new ArrayList<>();
-        for (BlogList.ItemEntity item : items) {
+        List<BlogList.Blog> newBlogItems = new ArrayList<>();
+        for (BlogList.Blog item : items) {
             if (!data.contains(item)) {
                 newBlogItems.add(item);
             } else {

@@ -11,7 +11,7 @@ import javax.inject.Inject;
  * LastestBlogListFragment adapter
  * Created by tianbin on 16/11/4.
  */
-public class LastestBlogListAdapter extends BaseQuickAdapter<BlogList.ItemEntity> {
+public class LastestBlogListAdapter extends BaseQuickAdapter<BlogList.Blog> {
 
     @Inject
     public LastestBlogListAdapter() {
@@ -19,9 +19,9 @@ public class LastestBlogListAdapter extends BaseQuickAdapter<BlogList.ItemEntity
     }
 
     @Override
-    protected void convert(BaseViewHolder baseViewHolder, BlogList.ItemEntity itemEntity) {
-        baseViewHolder.setText(R.id.tv_title, itemEntity.getTitle())
-                .setText(R.id.tv_origin_title, itemEntity.getOrigin().getTitle())
+    protected void convert(BaseViewHolder baseViewHolder, BlogList.Blog blog) {
+        baseViewHolder.setText(R.id.tv_title, blog.getTitle())
+                .setText(R.id.tv_origin_title, blog.getOrigin().getTitle())
                 .addOnClickListener(R.id.ll_blog_holder_root);
     }
 }

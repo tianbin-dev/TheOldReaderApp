@@ -2,6 +2,7 @@ package com.tianbin.theoldreaderapp.data.module;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ public class BlogList {
     @SerializedName("continuation")
     private long mContinuation;
     @SerializedName("items")
-    private List<ItemEntity> mItems;
+    private List<Blog> mItems;
 
     public String getDirection() {
         return mDirection;
@@ -83,11 +84,11 @@ public class BlogList {
         mContinuation = continuation;
     }
 
-    public List<ItemEntity> getItems() {
+    public List<Blog> getItems() {
         return mItems;
     }
 
-    public void setItems(List<ItemEntity> items) {
+    public void setItems(List<Blog> items) {
         mItems = items;
     }
 
@@ -104,7 +105,7 @@ public class BlogList {
         }
     }
 
-    public static class ItemEntity {
+    public static class Blog implements Serializable{
         @SerializedName("crawlTimeMsec")
         private String mCrawlTimeMsec;
         @SerializedName("timestampUsec")
@@ -144,8 +145,8 @@ public class BlogList {
                 return false;
             }
 
-            if (obj instanceof ItemEntity) {
-                return this.mId.equals(((ItemEntity) obj).getId());
+            if (obj instanceof Blog) {
+                return this.mId.equals(((Blog) obj).getId());
             }
             return false;
         }
@@ -283,7 +284,7 @@ public class BlogList {
             mComments = comments;
         }
 
-        public static class SummaryEntity {
+        public static class SummaryEntity implements Serializable{
             @SerializedName("direction")
             private String mDirection;
             @SerializedName("content")
@@ -306,7 +307,7 @@ public class BlogList {
             }
         }
 
-        public static class OriginEntity {
+        public static class OriginEntity implements Serializable{
             @SerializedName("streamId")
             private String mStreamId;
             @SerializedName("title")
@@ -339,7 +340,7 @@ public class BlogList {
             }
         }
 
-        public static class CanonicalEntity {
+        public static class CanonicalEntity implements Serializable{
             @SerializedName("href")
             private String mHref;
 
@@ -352,7 +353,7 @@ public class BlogList {
             }
         }
 
-        public static class AlternateEntity {
+        public static class AlternateEntity implements Serializable{
             @SerializedName("href")
             private String mHref;
             @SerializedName("type")

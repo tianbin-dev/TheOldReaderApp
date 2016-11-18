@@ -7,6 +7,7 @@ import android.view.View;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.tianbin.theoldreaderapp.contract.blog.BlogListContract;
+import com.tianbin.theoldreaderapp.data.module.BlogList;
 import com.tianbin.theoldreaderapp.di.component.MainComponent;
 import com.tianbin.theoldreaderapp.presenter.blog.LastBlogListPresenter;
 import com.tianbin.theoldreaderapp.ui.module.blog.adapter.LastestBlogListAdapter;
@@ -41,8 +42,8 @@ public class LastestBlogListFragment extends BlogListBaseFragment {
             @Override
             public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int position) {
                 LastestBlogListAdapter lastestBlogListAdapter = (LastestBlogListAdapter) baseQuickAdapter;
-                String href = lastestBlogListAdapter.getData().get(position).getCanonical().get(0).getHref();
-                jumpToBlogDetailFragment(view, href);
+                BlogList.Blog blog = lastestBlogListAdapter.getData().get(position);
+                jumpToBlogDetailFragment(view, blog);
             }
         });
     }

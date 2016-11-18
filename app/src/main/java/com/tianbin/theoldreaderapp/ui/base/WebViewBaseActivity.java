@@ -1,48 +1,41 @@
 package com.tianbin.theoldreaderapp.ui.base;
 
-import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.view.View;
-import android.webkit.WebChromeClient;
+import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ProgressBar;
 
 import com.tianbin.theoldreaderapp.R;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * WebViewFragment 基类
  * Created by tianbin on 16/7/18.
  */
-public abstract class WebViewBaseFragment extends BaseFragment {
+public abstract class WebViewBaseActivity extends AppCompatActivity {
 
     @BindView(R.id.web_view)
     protected WebView mWebView;
-    @BindView(R.id.webview_progressbar)
-    ProgressBar mWebViewProgressBar;
 
     private WebViewClient mWebViewClient;
 
-    @Override
-    protected int getLayoutResId() {
-        return getFragmentLayoutResId();
-    }
+    protected abstract int getLayoutResId();
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(getLayoutResId());
+        ButterKnife.bind(this);
 
         initWebViewClient();
-        initWebView(view);
-
-        syncCookies(getContext());
+        initWebView();
     }
 
     @Override
@@ -80,9 +73,6 @@ public abstract class WebViewBaseFragment extends BaseFragment {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 webViewLoadPageFinished(view, url);
-                if (mWebView.getContentHeight() != 0) {
-                    mWebViewProgressBar.setVisibility(View.GONE);
-                }
             }
 
             @Override
@@ -96,27 +86,9 @@ public abstract class WebViewBaseFragment extends BaseFragment {
         };
     }
 
-    protected void initWebView(View view) {
+    protected void initWebView() {
         mWebView.setWebViewClient(mWebViewClient);
         // 不设置,无法弹出Alert
-        mWebView.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-                super.onProgressChanged(view, newProgress);
-                if (newProgress < 10) {
-                    newProgress = 10;
-                }
-                if (newProgress == 100) {
-                    mWebViewProgressBar.setVisibility(View.GONE);
-                } else {
-                    if (mWebViewProgressBar.getVisibility() == View.GONE) {
-                        mWebViewProgressBar.setVisibility(View.VISIBLE);
-                    }
-                    mWebViewProgressBar.setProgress(newProgress);
-                }
-                super.onProgressChanged(view, newProgress);
-            }
-        });
 
         WebSettings settings = mWebView.getSettings();
 
@@ -151,39 +123,6 @@ public abstract class WebViewBaseFragment extends BaseFragment {
         settings.setDatabaseEnabled(true);
         //settings.setUserAgentString(UserAgent.newWebView(settings.getUserAgentString()));
     }
-
-    private void syncCookies(final Context context) {
-
-        //CookieManager cookieManager = CookieManager.getInstance();
-
-        //String cookies = LoggedInUser.getCookie();
-        //if (TextUtils.isEmpty(cookies)) {
-        //    return;
-        //}
-        //String[] cks = cookies.split(";");
-        //if (cks == null || cks.length == 0) {
-        //    return;
-        //}
-        //CookieSyncManager.createInstance(context);
-        //
-        //cookieManager.setAcceptCookie(true);
-
-        //String[] domains = new String[]{
-        //        "", // debug
-        //        "", // api release
-        //        "", // public release
-        //        "" // root domain
-        //};
-        //
-        //for (String domain : domains) {
-        //    for (String ck : cks) {
-        //        cookieManager.setCookie(domain, ck);
-        //    }
-        //}
-        //CookieSyncManager.getInstance().sync();
-    }
-
-    protected abstract int getFragmentLayoutResId();
 
     /**
      * web页加载完毕回调

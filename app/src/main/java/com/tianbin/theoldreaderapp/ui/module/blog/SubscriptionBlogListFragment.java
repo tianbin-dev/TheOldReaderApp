@@ -9,6 +9,7 @@ import android.view.View;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.tianbin.theoldreaderapp.contract.blog.BlogListContract;
+import com.tianbin.theoldreaderapp.data.module.BlogList;
 import com.tianbin.theoldreaderapp.data.module.SubscriptionList;
 import com.tianbin.theoldreaderapp.di.component.SimpleFragmentComponent;
 import com.tianbin.theoldreaderapp.presenter.blog.SubscriptionBlogListPresenter;
@@ -56,8 +57,8 @@ public class SubscriptionBlogListFragment extends BlogListBaseFragment {
             @Override
             public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int position) {
                 SubscriptionBlogListAdapter subscriptionBlogListAdapter = (SubscriptionBlogListAdapter) baseQuickAdapter;
-                String href = subscriptionBlogListAdapter.getData().get(position).getCanonical().get(0).getHref();
-                jumpToBlogDetailFragment(view, href);
+                BlogList.Blog blog = subscriptionBlogListAdapter.getData().get(position);
+                jumpToBlogDetailFragment(view, blog);
             }
         });
     }

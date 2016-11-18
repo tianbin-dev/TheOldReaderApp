@@ -3,9 +3,9 @@ package com.tianbin.theoldreaderapp.mvp;
 import android.support.annotation.UiThread;
 
 /**
+ * MvpPresenter
  * Created by tianbin on 16/11/3.
  */
-
 public interface MvpPresenter<V extends MvpView> {
 
     /**

@@ -22,4 +22,8 @@ public interface BlogApi {
     Observable<BlogList> getUnReadContents(List<String> idList);
 
     Observable<BlogIdItemList> getSubscriptionBlogIds(String subscriptionId, long continuation);
+
+    Observable<Void> markAsLiked(String id);
+
+    Observable<BlogIdItemList> getLikedBlogIds(long continuation);
 }

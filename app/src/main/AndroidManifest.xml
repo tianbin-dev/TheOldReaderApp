@@ -34,6 +34,9 @@
         <activity
             android:name=".ui.base.SimpleFragmentActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name=".ui.module.blog.BlogDetailActivity"
+            android:theme="@style/AppThemeNoActionBar"/>
     </application>
 
 </manifest>

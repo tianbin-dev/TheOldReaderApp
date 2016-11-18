@@ -11,7 +11,7 @@ import javax.inject.Inject;
  * SubscriptionBlogFrament adapter
  * Created by tianbin on 16/11/4.
  */
-public class SubscriptionBlogListAdapter extends BaseQuickAdapter<BlogList.ItemEntity> {
+public class SubscriptionBlogListAdapter extends BaseQuickAdapter<BlogList.Blog> {
 
     @Inject
     public SubscriptionBlogListAdapter() {
@@ -19,8 +19,8 @@ public class SubscriptionBlogListAdapter extends BaseQuickAdapter<BlogList.ItemE
     }
 
     @Override
-    protected void convert(BaseViewHolder baseViewHolder, BlogList.ItemEntity itemEntity) {
-        baseViewHolder.setText(R.id.tv_blog_title, itemEntity.getTitle())
+    protected void convert(BaseViewHolder baseViewHolder, BlogList.Blog blog) {
+        baseViewHolder.setText(R.id.tv_blog_title, blog.getTitle())
                 .addOnClickListener(R.id.ll_blog_holder_root);
     }
 }

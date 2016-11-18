@@ -7,10 +7,9 @@ import javax.inject.Inject;
 import rx.Observable;
 
 /**
- * class des
+ * SubscriptionBlogListPresenter
  * Created by tianbin on 16/11/12.
  */
-
 public class SubscriptionBlogListPresenter extends BlogListBasePresenter {
 
     private String mSubscriptionId;

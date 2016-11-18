@@ -29,7 +29,7 @@ import butterknife.BindView;
 public abstract class BlogListBaseFragment extends BaseFragment implements BlogListContract.View, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.news_recycler_view)
-    RecyclerView mNewsRecyclerView;
+    public RecyclerView mNewsRecyclerView;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -100,7 +100,7 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
     }
 
     @Override
-    public void fetchNewsSuccess(List<BlogList.ItemEntity> blogList) {
+    public void fetchNewsSuccess(List<BlogList.Blog> blogList) {
         if (mBaseQuickAdapter != null) {
             mBaseQuickAdapter.setNewData(blogList);
             mBaseQuickAdapter.notifyDataSetChanged();
@@ -123,7 +123,7 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
     }
 
     @Override
-    public void loadMoreNewsSuccess(List<BlogList.ItemEntity> blogList) {
+    public void loadMoreNewsSuccess(List<BlogList.Blog> blogList) {
         if (mBaseQuickAdapter != null) {
             mBaseQuickAdapter.addData(blogList);
         }
@@ -144,12 +144,12 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
     }
 
     @Override
-    public List<BlogList.ItemEntity> getData() {
+    public List<BlogList.Blog> getData() {
         return mBaseQuickAdapter.getData();
     }
 
-    protected void jumpToBlogDetailFragment(View view, String href) {
-        BlogDetailFragment.start(view.getContext(), href);
+    protected void jumpToBlogDetailFragment(View view, BlogList.Blog blog) {
+        BlogDetailActivity.start(view.getContext(), blog);
     }
 
     public abstract BlogListContract.Presenter getPresenter();

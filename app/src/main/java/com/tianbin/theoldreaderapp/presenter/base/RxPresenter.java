@@ -7,7 +7,7 @@ import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
 /**
- * class des
+ * RxPresenter
  * Created by tianbin on 16/11/15.
  */
 

@@ -14,17 +14,17 @@ public interface BlogListContract {
 
     interface View extends MvpView {
 
-        void fetchNewsSuccess(List<BlogList.ItemEntity> blogList);
+        void fetchNewsSuccess(List<BlogList.Blog> blogList);
 
         void fetchNewsFailed(Throwable throwable);
 
-        void loadMoreNewsSuccess(List<BlogList.ItemEntity> blogList);
+        void loadMoreNewsSuccess(List<BlogList.Blog> blogList);
 
         void loadMoreNewsCompleted();
 
         void pullDownRefreshSuccess();
 
-        List<BlogList.ItemEntity> getData();
+        List<BlogList.Blog> getData();
     }
 
     interface Presenter extends MvpPresenter<View> {

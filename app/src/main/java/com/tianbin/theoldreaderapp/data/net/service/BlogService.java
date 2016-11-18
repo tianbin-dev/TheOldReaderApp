@@ -5,6 +5,8 @@ import com.tianbin.theoldreaderapp.data.module.BlogList;
 
 import java.util.List;
 
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -30,4 +32,11 @@ public interface BlogService {
 
     @GET("/reader/api/0/stream/items/ids")
     Observable<BlogIdItemList> getSubscriptionBlogIds(@Query("s") String subscriptionId, @Query("c") long continuation);
+
+    @FormUrlEncoded
+    @POST("reader/api/0/edit-tag?a=user/-/state/com.google/like")
+    Observable<Void> markAsLiked(@Field("i") String id);
+
+    @GET("/reader/api/0/stream/items/ids?s=user/-/state/com.google/like")
+    Observable<BlogIdItemList> getLikedItemIds(@Query("c") long continuation);
 }

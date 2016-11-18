@@ -48,4 +48,14 @@ public class BlogDataSource implements BlogApi {
     public Observable<BlogIdItemList> getSubscriptionBlogIds(String subscriptionId, long continuation) {
         return mBlogService.getSubscriptionBlogIds(subscriptionId, continuation);
     }
+
+    @Override
+    public Observable markAsLiked(String id) {
+        return mBlogService.markAsLiked(id);
+    }
+
+    @Override
+    public Observable<BlogIdItemList> getLikedBlogIds(long continuation) {
+        return mBlogService.getLikedItemIds(continuation);
+    }
 }

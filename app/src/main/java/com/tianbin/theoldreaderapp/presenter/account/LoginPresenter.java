@@ -14,7 +14,7 @@ import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
- * login presenter
+ * LoginPresenter
  * Created by tianbin on 16/10/29.
  */
 public class LoginPresenter extends RxPresenter<LoginContract.View> implements LoginContract.Preseneter {
