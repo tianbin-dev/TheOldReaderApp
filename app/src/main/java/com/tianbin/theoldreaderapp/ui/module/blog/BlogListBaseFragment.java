@@ -149,7 +149,14 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
     }
 
     protected void jumpToBlogDetailFragment(View view, BlogList.Blog blog) {
-        BlogDetailActivity.start(view.getContext(), blog);
+        String simpleName = getClass().getSimpleName();
+        int fromType;
+        if (simpleName.equals("FavouriteFragment")) {
+            fromType = BlogDetailActivity.FROM_FAV;
+        } else {
+            fromType = BlogDetailActivity.FROM_OTHER;
+        }
+        BlogDetailActivity.start(view.getContext(), blog, fromType);
     }
 
     public abstract BlogListContract.Presenter getPresenter();

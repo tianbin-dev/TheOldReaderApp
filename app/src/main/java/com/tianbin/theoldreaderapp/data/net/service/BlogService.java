@@ -37,6 +37,12 @@ public interface BlogService {
     @POST("reader/api/0/edit-tag?a=user/-/state/com.google/like")
     Observable<Void> markAsLiked(@Field("i") String id);
 
+    @FormUrlEncoded
+    @POST("reader/api/0/edit-tag?r=user/-/state/com.google/like")
+    Observable<Void> markAsUnLiked(@Field("i") String id);
+
     @GET("/reader/api/0/stream/items/ids?s=user/-/state/com.google/like")
     Observable<BlogIdItemList> getLikedItemIds(@Query("c") long continuation);
+
+
 }

@@ -10,12 +10,19 @@ import com.tianbin.theoldreaderapp.mvp.MvpView;
 public interface BlogDetailContract {
 
     interface View extends MvpView {
+        void starSuccess();
 
+        void startFailed();
+
+        void unstarSuccess();
+
+        void unstartFailed();
     }
 
     interface Preseneter extends MvpPresenter<View> {
 
         void markAsStared(String id);
 
+        void markAsUnstared(String id);
     }
 }

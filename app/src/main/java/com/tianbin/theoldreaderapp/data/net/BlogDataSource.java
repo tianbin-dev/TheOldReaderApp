@@ -55,6 +55,11 @@ public class BlogDataSource implements BlogApi {
     }
 
     @Override
+    public Observable<Void> markAsUnLiked(String id) {
+        return mBlogService.markAsUnLiked(id);
+    }
+
+    @Override
     public Observable<BlogIdItemList> getLikedBlogIds(long continuation) {
         return mBlogService.getLikedItemIds(continuation);
     }

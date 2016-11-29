@@ -7,10 +7,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import com.tianbin.theoldreaderapp.HasComponent;
 import com.tianbin.theoldreaderapp.MyApplication;
 import com.tianbin.theoldreaderapp.R;
+import com.tianbin.theoldreaderapp.contract.blog.BlogDetailContract;
 import com.tianbin.theoldreaderapp.data.module.BlogList;
 import com.tianbin.theoldreaderapp.di.component.BlogDetailComponent;
 import com.tianbin.theoldreaderapp.di.component.DaggerBlogDetailComponent;
@@ -26,21 +28,28 @@ import butterknife.BindView;
  * detail fragment
  * Created by tianbin on 16/11/4.
  */
-public class BlogDetailActivity extends WebViewBaseActivity implements HasComponent<BlogDetailComponent>{
+public class BlogDetailActivity extends WebViewBaseActivity implements HasComponent<BlogDetailComponent>, BlogDetailContract.View {
+
+    public static final int FROM_FAV = 1;
+    public static final int FROM_OTHER = 2;
 
     private static final String BLOG_URL = "blog_url";
+    private static final String FROM_TYPE = "from_type";
 
     @Inject
     BlogDetailPresenter mBlogDetailPresenter;
+
+    private int mFromType;
 
     @BindView(R.id.tool_bar)
     Toolbar mToolbar;
 
     private BlogList.Blog mBlog;
 
-    public static void start(Context context, BlogList.Blog blog) {
+    public static void start(Context context, BlogList.Blog blog, int fromType) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(BLOG_URL, blog);
+        bundle.putInt(FROM_TYPE, fromType);
         Intent intent = new Intent(context, BlogDetailActivity.class);
         intent.putExtras(bundle);
         context.startActivity(intent);
@@ -70,6 +79,7 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
         Bundle arguments = getIntent().getExtras();
 
         mBlog = (BlogList.Blog) arguments.getSerializable(BLOG_URL);
+        mFromType = arguments.getInt(FROM_TYPE);
 
         mWebView.loadUrl(mBlog.getCanonical().get(0).getHref());
 
@@ -92,18 +102,26 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.action_read).setTitle("标记为未读");
+        //menu.findItem(R.id.action_read).setTitle("标记为未读");
+        if (mFromType == FROM_FAV) {
+            menu.findItem(R.id.action_fav).setTitle("取消收藏");
+        }
+        menu.findItem(R.id.action_read).setVisible(!isFaved());
         return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 break;
             case R.id.action_fav:
-                mBlogDetailPresenter.markAsStared(mBlog.getId());
+                if (!isFaved()) {
+                    mBlogDetailPresenter.markAsStared(mBlog.getId());
+                } else {
+                    mBlogDetailPresenter.markAsUnstared(mBlog.getId());
+                }
                 break;
             case R.id.action_read:
 
@@ -118,5 +136,29 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
                 .applicationComponent(MyApplication.get(this).getComponent())
                 .blogModule(new BlogModule())
                 .build();
+    }
+
+    @Override
+    public void starSuccess() {
+        Toast.makeText(this, "收藏成功", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void startFailed() {
+        Toast.makeText(this, "收藏失败", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void unstarSuccess() {
+        Toast.makeText(this, "取消收藏成功", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void unstartFailed() {
+        Toast.makeText(this, "取消收藏失败", Toast.LENGTH_LONG).show();
+    }
+
+    private boolean isFaved() {
+        return mFromType == FROM_FAV;
     }
 }

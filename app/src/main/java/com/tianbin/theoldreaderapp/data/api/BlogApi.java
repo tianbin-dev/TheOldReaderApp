@@ -25,5 +25,7 @@ public interface BlogApi {
 
     Observable<Void> markAsLiked(String id);
 
+    Observable<Void> markAsUnLiked(String id);
+
     Observable<BlogIdItemList> getLikedBlogIds(long continuation);
 }

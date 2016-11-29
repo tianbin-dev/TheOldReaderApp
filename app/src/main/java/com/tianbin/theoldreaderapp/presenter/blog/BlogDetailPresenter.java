@@ -1,6 +1,5 @@
 package com.tianbin.theoldreaderapp.presenter.blog;
 
-import com.tianbin.theoldreaderapp.common.wrapper.AppLog;
 import com.tianbin.theoldreaderapp.contract.blog.BlogDetailContract;
 import com.tianbin.theoldreaderapp.data.api.BlogApi;
 import com.tianbin.theoldreaderapp.presenter.base.RxPresenter;
@@ -33,14 +32,34 @@ public class BlogDetailPresenter extends RxPresenter<BlogDetailContract.View> im
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
-                        AppLog.d("markAsLiked success");
+                        mView.starSuccess();
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        AppLog.e("markAsLiked error" + throwable.toString());
+                        mView.startFailed();
                     }
                 });
         addSubscrebe(markAsStaredSubscription);
     }
+
+    @Override
+    public void markAsUnstared(String id) {
+        Subscription markAsUnStaredSubscription = mBlogApi.markAsUnLiked(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        mView.unstarSuccess();
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        mView.unstartFailed();
+                    }
+                });
+        addSubscrebe(markAsUnStaredSubscription);
+    }
+
 }
