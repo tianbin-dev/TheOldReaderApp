@@ -3,6 +3,7 @@ package com.tianbin.theoldreaderapp.ui.module.blog.adapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.tianbin.theoldreaderapp.R;
+import com.tianbin.theoldreaderapp.common.util.CalendarUtil;
 import com.tianbin.theoldreaderapp.data.module.BlogList;
 
 import javax.inject.Inject;
@@ -22,6 +23,7 @@ public class LastestBlogListAdapter extends BaseQuickAdapter<BlogList.Blog> {
     protected void convert(BaseViewHolder baseViewHolder, BlogList.Blog blog) {
         baseViewHolder.setText(R.id.tv_title, blog.getTitle())
                 .setText(R.id.tv_origin_title, blog.getOrigin().getTitle())
+                .setText(R.id.tv_post_time, CalendarUtil.getBlogPostTime(blog.getPublished()))
                 .addOnClickListener(R.id.ll_blog_holder_root);
     }
 }

@@ -73,6 +73,7 @@ public abstract class WebViewBaseActivity extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+                view.scrollTo(0,0);
                 webViewLoadPageFinished(view, url);
             }
 

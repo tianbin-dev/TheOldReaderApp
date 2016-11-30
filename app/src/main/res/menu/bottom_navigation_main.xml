@@ -18,9 +18,9 @@
         android:title="收藏"
         />
 
-    <item
-        android:id="@+id/action_profile"
-        android:icon="@drawable/ic_profile"
-        android:title="我的"
-        />
+    <!--<item-->
+    <!--android:id="@+id/action_profile"-->
+    <!--android:icon="@drawable/ic_profile"-->
+    <!--android:title="我的"-->
+    <!--/>-->
 </menu>

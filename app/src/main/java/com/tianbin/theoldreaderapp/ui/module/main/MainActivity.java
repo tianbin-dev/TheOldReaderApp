@@ -17,7 +17,6 @@ import com.tianbin.theoldreaderapp.R;
 import com.tianbin.theoldreaderapp.di.component.DaggerMainComponent;
 import com.tianbin.theoldreaderapp.di.component.MainComponent;
 import com.tianbin.theoldreaderapp.ui.module.account.FavouriteFragment;
-import com.tianbin.theoldreaderapp.ui.module.account.ProfileFragment;
 import com.tianbin.theoldreaderapp.ui.module.blog.LastestBlogListFragment;
 import com.tianbin.theoldreaderapp.ui.module.subscription.SubscriptionFragment;
 
@@ -98,9 +97,9 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Main
             case R.id.action_fav_list:
                 getSupportActionBar().setTitle("收藏");
                 return FavouriteFragment.class.getName();
-            case R.id.action_profile:
-                getSupportActionBar().setTitle("我的");
-                return ProfileFragment.class.getName();
+            //case R.id.action_profile:
+            //    getSupportActionBar().setTitle("我的");
+            //    return ProfileFragment.class.getName();
             default:
                 return null;
         }
