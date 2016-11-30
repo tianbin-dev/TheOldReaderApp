@@ -21,9 +21,6 @@ public interface BlogService {
     @GET("/reader/api/0/stream/contents")
     Observable<BlogList> getBlogList(@Query("c") long continuation);
 
-    @POST("/reader/api/0/edit-tag")
-    Observable markAsRead();
-
     @GET("/reader/api/0/stream/items/ids?xt=user/-/state/com.google/read&s=user/-/state/com.google/reading-list")
     Observable<BlogIdItemList> getUnReadItemIds(@Query("c") long continuation);
 
@@ -32,6 +29,14 @@ public interface BlogService {
 
     @GET("/reader/api/0/stream/items/ids")
     Observable<BlogIdItemList> getSubscriptionBlogIds(@Query("s") String subscriptionId, @Query("c") long continuation);
+
+    @FormUrlEncoded
+    @POST("/reader/api/0/edit-tag?a=user/-/state/com.google/read")
+    Observable<Void> markAsRead(@Field("i") String id);
+
+    @FormUrlEncoded
+    @POST("/reader/api/0/edit-tag?r=user/-/state/com.google/read")
+    Observable<Void> markAsUnRead(@Field("i") String id);
 
     @FormUrlEncoded
     @POST("reader/api/0/edit-tag?a=user/-/state/com.google/like")

@@ -43,6 +43,10 @@ public abstract class BlogListBasePresenter extends RxPresenter<BlogListContract
 
     @Override
     public void fetchBlogs(final BlogListContract.FetchType type) {
+        if (type == BlogListContract.FetchType.REFRESH) {
+            mContinuation = getTimeInSecond();
+        }
+
         Subscription fetchBlogsSubscription = getBlogItemIds()
                 .subscribeOn(Schedulers.io())
                 .map(new Func1<BlogIdItemList, List<String>>() {
@@ -114,19 +118,9 @@ public abstract class BlogListBasePresenter extends RxPresenter<BlogListContract
         if (blogList.getItems() == null) {
             return;
         }
-
         List<BlogList.Blog> data = mView.getData();
-        List<BlogList.Blog> items = blogList.getItems();
-
-        List<BlogList.Blog> newBlogItems = new ArrayList<>();
-        for (BlogList.Blog item : items) {
-            if (!data.contains(item)) {
-                newBlogItems.add(item);
-            } else {
-                break;
-            }
-        }
-        data.addAll(newBlogItems);
+        data.clear();
+        data.addAll(blogList.getItems());
     }
 
 }

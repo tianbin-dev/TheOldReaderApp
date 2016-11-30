@@ -30,11 +30,6 @@ public class BlogDataSource implements BlogApi {
     }
 
     @Override
-    public Observable markAsRead() {
-        return mBlogService.markAsRead();
-    }
-
-    @Override
     public Observable<BlogIdItemList> getUnReadItemIds(long continuation) {
         return mBlogService.getUnReadItemIds(continuation);
     }
@@ -47,6 +42,16 @@ public class BlogDataSource implements BlogApi {
     @Override
     public Observable<BlogIdItemList> getSubscriptionBlogIds(String subscriptionId, long continuation) {
         return mBlogService.getSubscriptionBlogIds(subscriptionId, continuation);
+    }
+
+    @Override
+    public Observable<Void> markAsRead(String id) {
+        return mBlogService.markAsRead(id);
+    }
+
+    @Override
+    public Observable<Void> markAsUnRead(String id) {
+        return mBlogService.markAsUnRead(id);
     }
 
     @Override

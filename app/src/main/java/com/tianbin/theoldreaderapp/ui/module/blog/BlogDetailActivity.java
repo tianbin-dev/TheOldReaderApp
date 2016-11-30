@@ -26,7 +26,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 /**
- * detail fragment
+ * BlogDetailActivity
  * Created by tianbin on 16/11/4.
  */
 public class BlogDetailActivity extends WebViewBaseActivity implements HasComponent<BlogDetailComponent>, BlogDetailContract.View {
@@ -36,6 +36,10 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
 
     private static final String BLOG_URL = "blog_url";
     private static final String FROM_TYPE = "from_type";
+
+    private final int BLOG_READ_STATUS_IDLE = 0;
+    private final int BLOG_READ_STATUS_UNREAD = 1;
+    private final int BLOG_READ_STATUS_READ = 2;
 
     @Inject
     BlogDetailPresenter mBlogDetailPresenter;
@@ -48,6 +52,8 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
     private ActionBar mActionBar;
 
     private BlogList.Blog mBlog;
+
+    private int mBlogReadStatus = BLOG_READ_STATUS_IDLE;
 
     public static void start(Context context, BlogList.Blog blog, int fromType) {
         Bundle bundle = new Bundle();
@@ -84,6 +90,8 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
 
         getComponent().inject(this);
 
+        mBlogDetailPresenter.attachView(this);
+
         Bundle arguments = getIntent().getExtras();
 
         mBlog = (BlogList.Blog) arguments.getSerializable(BLOG_URL);
@@ -92,6 +100,19 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
         mWebView.loadUrl(mBlog.getCanonical().get(0).getHref());
 
         initToolbar();
+
+        if (!isFaved()) {
+            mBlogDetailPresenter.markAsRead(mBlog.getId());
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mBlogDetailPresenter != null) {
+            mBlogDetailPresenter.detachView();
+            mBlogDetailPresenter = null;
+        }
     }
 
     private void initToolbar() {
@@ -111,11 +132,22 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem markAsUnReadMenu = menu.findItem(R.id.action_mark_unread);
         if (mFromType == FROM_FAV) {
             menu.findItem(R.id.action_fav).setTitle("取消收藏");
-            menu.findItem(R.id.action_mark_unread).setVisible(false);
+            markAsUnReadMenu.setVisible(false);
+        } else {
+            if (isMarkedAsRead()) {
+                markAsUnReadMenu.setTitle("标为未读");
+            } else {
+                markAsUnReadMenu.setTitle("标为已读");
+            }
         }
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    private boolean isMarkedAsRead() {
+        return mBlogReadStatus == BLOG_READ_STATUS_READ;
     }
 
     @Override
@@ -132,7 +164,11 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
                 }
                 break;
             case R.id.action_mark_unread:
-
+                if (isMarkedAsRead()) {
+                    mBlogDetailPresenter.markAsUnRead(mBlog.getId());
+                } else {
+                    mBlogDetailPresenter.markAsRead(mBlog.getId());
+                }
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -142,7 +178,7 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
     public void onBackPressed() {
         if (mWebView.canGoBack()) {
             mWebView.goBack();
-        }else{
+        } else {
             super.onBackPressed();
         }
     }
@@ -156,23 +192,45 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
     }
 
     @Override
-    public void starSuccess() {
-        Toast.makeText(this, "收藏成功", Toast.LENGTH_LONG).show();
+    public void actionSuccess(BlogDetailContract.ActionType actionType) {
+        switch (actionType) {
+            case READ:
+                if (isNotAtIdle()) {
+                    Toast.makeText(this, "已标为已读", Toast.LENGTH_LONG).show();
+                }
+                mBlogReadStatus = BLOG_READ_STATUS_READ;
+                break;
+            case UNREAD:
+                mBlogReadStatus = BLOG_READ_STATUS_UNREAD;
+                Toast.makeText(this, "已标为未读", Toast.LENGTH_LONG).show();
+                break;
+            case STARED:
+                Toast.makeText(this, "收藏成功", Toast.LENGTH_LONG).show();
+                break;
+            case UNSTARED:
+                Toast.makeText(this, "取消收藏成功", Toast.LENGTH_LONG).show();
+                break;
+        }
+
+    }
+
+    private boolean isNotAtIdle() {
+        return mBlogReadStatus != BLOG_READ_STATUS_IDLE;
     }
 
     @Override
-    public void startFailed() {
-        Toast.makeText(this, "收藏失败", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void unstarSuccess() {
-        Toast.makeText(this, "取消收藏成功", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void unstartFailed() {
-        Toast.makeText(this, "取消收藏失败", Toast.LENGTH_LONG).show();
+    public void actionFailed(BlogDetailContract.ActionType actionType) {
+        switch (actionType) {
+            case UNREAD:
+                Toast.makeText(this, "标为未读失败", Toast.LENGTH_LONG).show();
+                break;
+            case STARED:
+                Toast.makeText(this, "收藏失败", Toast.LENGTH_LONG).show();
+                break;
+            case UNSTARED:
+                Toast.makeText(this, "取消收藏失败", Toast.LENGTH_LONG).show();
+                break;
+        }
     }
 
     private boolean isFaved() {
