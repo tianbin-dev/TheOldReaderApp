@@ -86,4 +86,6 @@ dependencies {
 
     // https://github.com/loopeer/itemtouchhelper-extension
     compile 'com.loopeer.library:itemtouchhelperextension:1.0.1'
+    // https://github.com/wasabeef/recyclerview-animators
+    compile 'jp.wasabeef:recyclerview-animators:1.2.2'
 }

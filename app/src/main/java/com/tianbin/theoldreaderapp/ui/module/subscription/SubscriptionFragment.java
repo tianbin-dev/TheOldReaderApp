@@ -30,7 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * subscription fragment
+ * SubscriptionFragment
  * Created by tianbin on 16/11/4.
  */
 public class SubscriptionFragment extends BaseFragment implements SubscriptionContract.View, SwipeRefreshLayout.OnRefreshListener {
