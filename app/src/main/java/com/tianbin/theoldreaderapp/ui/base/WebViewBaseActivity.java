@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
  */
 public abstract class WebViewBaseActivity extends AppCompatActivity {
 
-    @BindView(R.id.web_view)
+    @BindView(R.id.webview)
     protected WebView mWebView;
 
     private WebViewClient mWebViewClient;
@@ -66,6 +66,7 @@ public abstract class WebViewBaseActivity extends AppCompatActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
+                webViewStartLoadPage(url);
                 return true;
             }
 
@@ -136,4 +137,10 @@ public abstract class WebViewBaseActivity extends AppCompatActivity {
      * web页加载错误回调
      */
     protected abstract void webViewClientReceiveDataError();
+
+    /**
+     * web页开始加载回调
+     * @param url
+     */
+    protected abstract void webViewStartLoadPage(String url);
 }

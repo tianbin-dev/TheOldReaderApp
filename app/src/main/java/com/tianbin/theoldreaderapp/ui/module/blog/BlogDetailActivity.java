@@ -3,6 +3,7 @@ package com.tianbin.theoldreaderapp.ui.module.blog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,8 +42,10 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
 
     private int mFromType;
 
-    @BindView(R.id.tool_bar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
+
+    private ActionBar mActionBar;
 
     private BlogList.Blog mBlog;
 
@@ -57,12 +60,17 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
 
     @Override
     protected void webViewLoadPageFinished(WebView view, String url) {
-
+        mActionBar.setTitle(view.getTitle());
     }
 
     @Override
     protected void webViewClientReceiveDataError() {
 
+    }
+
+    @Override
+    protected void webViewStartLoadPage(String url) {
+        mActionBar.setTitle("加载中...");
     }
 
     @Override
@@ -89,8 +97,9 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
     private void initToolbar() {
         setSupportActionBar(mToolbar);
 
-        getSupportActionBar().setTitle(mBlog.getOrigin().getTitle());
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mActionBar = getSupportActionBar();
+        mActionBar.setTitle(mBlog.getTitle());
+        mActionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -102,11 +111,10 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        //menu.findItem(R.id.action_read).setTitle("标记为未读");
         if (mFromType == FROM_FAV) {
             menu.findItem(R.id.action_fav).setTitle("取消收藏");
+            menu.findItem(R.id.action_mark_unread).setVisible(false);
         }
-        menu.findItem(R.id.action_read).setVisible(!isFaved());
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -123,11 +131,20 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
                     mBlogDetailPresenter.markAsUnstared(mBlog.getId());
                 }
                 break;
-            case R.id.action_read:
+            case R.id.action_mark_unread:
 
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mWebView.canGoBack()) {
+            mWebView.goBack();
+        }else{
+            super.onBackPressed();
+        }
     }
 
     @Override
