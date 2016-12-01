@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.tianbin.theoldreaderapp.HasComponent;
 import com.tianbin.theoldreaderapp.MyApplication;
@@ -23,12 +24,14 @@ import com.tianbin.theoldreaderapp.ui.module.subscription.SubscriptionFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements HasComponent<MainComponent>{
+public class MainActivity extends AppCompatActivity implements HasComponent<MainComponent> {
 
     @BindView(R.id.bottom_navigation_view)
     BottomNavigationView mBottomNavigationView;
-    @BindView(R.id.tool_bar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.tv_toolbar_title)
+    TextView mTvToolbarTitle;
 
     private FragmentManager mFragmentManager = getSupportFragmentManager();
 
@@ -49,7 +52,8 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Main
 
     private void initToolBar() {
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("最新");
+        getSupportActionBar().setTitle("");
+        mTvToolbarTitle.setText(getString(R.string.all_unread_blog));
     }
 
     private void initBottomNavigationView() {
@@ -89,17 +93,14 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Main
     private String getFragmentName(int menuId) {
         switch (menuId) {
             case R.id.action_news_list:
-                getSupportActionBar().setTitle("最新");
+                mTvToolbarTitle.setText(getString(R.string.all_unread_blog));
                 return LastestBlogListFragment.class.getName();
             case R.id.action_subscription_list:
-                getSupportActionBar().setTitle("全部");
+                mTvToolbarTitle.setText(getString(R.string.all_subscription));
                 return SubscriptionFragment.class.getName();
             case R.id.action_fav_list:
-                getSupportActionBar().setTitle("收藏");
+                mTvToolbarTitle.setText(getString(R.string.my_fav));
                 return FavouriteFragment.class.getName();
-            //case R.id.action_profile:
-            //    getSupportActionBar().setTitle("我的");
-            //    return ProfileFragment.class.getName();
             default:
                 return null;
         }

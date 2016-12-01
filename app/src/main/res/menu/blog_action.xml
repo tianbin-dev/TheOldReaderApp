@@ -4,9 +4,9 @@
     <item
         android:id="@+id/action_fav"
         android:orderInCategory="100"
-        android:title="收藏" />
+        android:title="@string/fav"/>
     <item
         android:id="@+id/action_mark_unread"
         android:orderInCategory="100"
-        android:title="标记为未读" />
+        android:title="@string/mark_as_unread"/>
 </menu>

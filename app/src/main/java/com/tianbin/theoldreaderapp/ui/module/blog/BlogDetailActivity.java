@@ -80,7 +80,7 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
 
     @Override
     protected void webViewStartLoadPage(String url) {
-        mActionBar.setTitle("加载中...");
+        mActionBar.setTitle(getString(R.string.loading));
     }
 
     @Override
@@ -143,13 +143,13 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem markAsUnReadMenu = menu.findItem(R.id.action_mark_unread);
         if (mFromType == FROM_FAV) {
-            menu.findItem(R.id.action_fav).setTitle("取消收藏");
+            menu.findItem(R.id.action_fav).setTitle(getString(R.string.cancel_fav));
             markAsUnReadMenu.setVisible(false);
         } else {
             if (isMarkedAsRead()) {
-                markAsUnReadMenu.setTitle("标为未读");
+                markAsUnReadMenu.setTitle(getString(R.string.mark_as_unread));
             } else {
-                markAsUnReadMenu.setTitle("标为已读");
+                markAsUnReadMenu.setTitle(getString(R.string.mark_as_read));
             }
         }
         return super.onPrepareOptionsMenu(menu);
@@ -205,19 +205,19 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
         switch (actionType) {
             case READ:
                 if (isNotAtIdle()) {
-                    Toast.makeText(this, "已标为已读", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.mark_as_read_yet), Toast.LENGTH_LONG).show();
                 }
                 mBlogReadStatus = BLOG_READ_STATUS_READ;
                 break;
             case UNREAD:
                 mBlogReadStatus = BLOG_READ_STATUS_UNREAD;
-                Toast.makeText(this, "已标为未读", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.mark_as_unread_yet), Toast.LENGTH_LONG).show();
                 break;
             case STARED:
-                Toast.makeText(this, "收藏成功", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.fav_success), Toast.LENGTH_LONG).show();
                 break;
             case UNSTARED:
-                Toast.makeText(this, "取消收藏成功", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.cancel_fav_success), Toast.LENGTH_LONG).show();
                 break;
         }
 
@@ -230,14 +230,17 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
     @Override
     public void actionFailed(BlogDetailContract.ActionType actionType) {
         switch (actionType) {
+            case READ:
+                Toast.makeText(this, getString(R.string.mark_as_read_failed), Toast.LENGTH_LONG).show();
+                break;
             case UNREAD:
-                Toast.makeText(this, "标为未读失败", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.mark_as_unread_failed), Toast.LENGTH_LONG).show();
                 break;
             case STARED:
-                Toast.makeText(this, "收藏失败", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.fav_failed), Toast.LENGTH_LONG).show();
                 break;
             case UNSTARED:
-                Toast.makeText(this, "取消收藏失败", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.cancel_fav_failed), Toast.LENGTH_LONG).show();
                 break;
         }
     }

@@ -16,4 +16,29 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="all_unread_blog">所有未读</string>
+    <string name="all_subscription">所有订阅</string>
+    <string name="my_fav">我的收藏</string>
+
+    <string name="fav">收藏</string>
+    <string name="fav_success">收藏成功</string>
+    <string name="fav_failed">收藏失败</string>
+
+    <string name="cancel_fav">取消收藏</string>
+    <string name="cancel_fav_success">取消收藏成功</string>
+    <string name="cancel_fav_failed">取消收藏失败</string>
+
+    <string name="mark_as_read">标为已读</string>
+    <string name="mark_as_read_failed">标为已读失败</string>
+
+    <string name="mark_as_unread">标为未读</string>
+    <string name="mark_as_unread_failed">标为未读失败</string>
+
+    <string name="loading">加载中...</string>
+
+    <string name="mark_as_read_yet">已标为已读</string>
+    <string name="mark_as_unread_yet">已标为未读</string>
+
+
 </resources>
