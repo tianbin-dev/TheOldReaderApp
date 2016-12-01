@@ -1,37 +1,46 @@
 package com.tianbin.theoldreaderapp.ui.module.main;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tianbin.theoldreaderapp.HasComponent;
 import com.tianbin.theoldreaderapp.MyApplication;
 import com.tianbin.theoldreaderapp.R;
+import com.tianbin.theoldreaderapp.data.pref.AccountPref;
 import com.tianbin.theoldreaderapp.di.component.DaggerMainComponent;
 import com.tianbin.theoldreaderapp.di.component.MainComponent;
-import com.tianbin.theoldreaderapp.ui.module.account.FavouriteFragment;
 import com.tianbin.theoldreaderapp.ui.module.blog.LastestBlogListFragment;
+import com.tianbin.theoldreaderapp.ui.module.fav.FavouriteFragment;
 import com.tianbin.theoldreaderapp.ui.module.subscription.SubscriptionFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+import static com.tianbin.theoldreaderapp.R.id.toolbar;
 
 public class MainActivity extends AppCompatActivity implements HasComponent<MainComponent> {
 
     @BindView(R.id.bottom_navigation_view)
     BottomNavigationView mBottomNavigationView;
-    @BindView(R.id.toolbar)
+    @BindView(toolbar)
     Toolbar mToolbar;
     @BindView(R.id.tv_toolbar_title)
     TextView mTvToolbarTitle;
+    @BindView(R.id.iv_logout)
+    ImageView mIvLogout;
 
     private FragmentManager mFragmentManager = getSupportFragmentManager();
 
@@ -104,6 +113,21 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Main
             default:
                 return null;
         }
+    }
+
+    @OnClick(R.id.iv_logout)
+    public void clickLogout() {
+        new AlertDialog.Builder(this)
+                .setTitle("确定退出登陆？")
+                .setNegativeButton("取消", null)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        AccountPref.removeLogonToken(MainActivity.this);
+                        finish();
+                    }
+                })
+                .show();
     }
 
     @Override

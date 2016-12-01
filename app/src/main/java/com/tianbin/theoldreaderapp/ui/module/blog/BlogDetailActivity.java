@@ -1,10 +1,12 @@
 package com.tianbin.theoldreaderapp.ui.module.blog;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -169,7 +171,16 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
                 if (!isFaved()) {
                     mBlogDetailPresenter.markAsStared(mBlog.getId());
                 } else {
-                    mBlogDetailPresenter.markAsUnstared(mBlog.getId());
+                    new AlertDialog.Builder(this)
+                            .setTitle("确定取消收藏？")
+                            .setNegativeButton("取消", null)
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    mBlogDetailPresenter.markAsUnstared(mBlog.getId());
+                                }
+                            })
+                            .show();
                 }
                 break;
             case R.id.action_mark_unread:

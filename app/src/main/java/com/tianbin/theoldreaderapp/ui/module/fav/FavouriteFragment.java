@@ -1,4 +1,4 @@
-package com.tianbin.theoldreaderapp.ui.module.account;
+package com.tianbin.theoldreaderapp.ui.module.fav;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

@@ -28,6 +28,10 @@ public class AccountPref {
         return getPreference(context).getString(KEY_LOGIN_TOKEN, "");
     }
 
+    public static void removeLogonToken(Context context) {
+        saveLoginToken(context, "");
+    }
+
     public static void saveLogonUser(Context context, TokenInfo tokenInfo) {
         String userJson = new Gson().toJson(tokenInfo);
         getPreference(context).edit().putString(KEY_LOGON_USER, userJson).apply();

@@ -24,6 +24,15 @@
             android:textSize="18sp"
             android:layout_gravity="center"
             />
+
+        <ImageView
+            android:id="@+id/iv_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center_vertical|end"
+            android:background="@drawable/ic_logout"
+            />
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout

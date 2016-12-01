@@ -5,7 +5,7 @@ import com.tianbin.theoldreaderapp.data.api.SubscriptionApi;
 import com.tianbin.theoldreaderapp.di.module.ActivityModule;
 import com.tianbin.theoldreaderapp.di.module.BlogModule;
 import com.tianbin.theoldreaderapp.di.module.SubscriptionModule;
-import com.tianbin.theoldreaderapp.ui.module.account.FavouriteFragment;
+import com.tianbin.theoldreaderapp.ui.module.fav.FavouriteFragment;
 import com.tianbin.theoldreaderapp.ui.module.blog.LastestBlogListFragment;
 import com.tianbin.theoldreaderapp.ui.module.subscription.SubscriptionFragment;
 
