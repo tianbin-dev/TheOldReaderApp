@@ -21,6 +21,7 @@ import com.tianbin.theoldreaderapp.ui.base.BaseFragment;
 import java.util.List;
 
 import butterknife.BindView;
+import ezy.ui.layout.LoadingLayout;
 
 /**
  * news fragment
@@ -35,6 +36,8 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
 
     private BaseQuickAdapter mBaseQuickAdapter;
     private BlogListContract.Presenter mPresenter;
+
+    private LoadingLayout mLoadingLayout;
 
     @Override
     protected int getLayoutResId() {
@@ -52,8 +55,14 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
         initAdapter();
         initRecyclerView();
 
+        mLoadingLayout = LoadingLayout.wrap(view);
+
+        fetchData();
+    }
+
+    private void fetchData() {
         mPresenter.fetchBlogs(BlogListContract.FetchType.INIT);
-        mSwipeRefreshLayout.setRefreshing(true);
+        mLoadingLayout.showLoading();
     }
 
     private void initAdapter() {
@@ -105,6 +114,7 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
             mBaseQuickAdapter.setNewData(blogList);
             mBaseQuickAdapter.notifyDataSetChanged();
         }
+        mLoadingLayout.showContent();
         dismissSwipeRefreshLayout();
     }
 
@@ -119,6 +129,7 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
 
     @Override
     public void fetchNewsFailed(Throwable throwable) {
+        mLoadingLayout.showError();
         dismissSwipeRefreshLayout();
     }
 
