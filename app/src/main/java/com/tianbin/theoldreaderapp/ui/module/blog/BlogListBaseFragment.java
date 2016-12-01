@@ -114,7 +114,12 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
             mBaseQuickAdapter.setNewData(blogList);
             mBaseQuickAdapter.notifyDataSetChanged();
         }
-        mLoadingLayout.showContent();
+        if (blogList.size() == 0) {
+            mLoadingLayout.showEmpty();
+        } else {
+            mLoadingLayout.showContent();
+        }
+
         dismissSwipeRefreshLayout();
     }
 

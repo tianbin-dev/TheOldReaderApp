@@ -103,7 +103,11 @@ public class SubscriptionFragment extends BaseFragment implements SubscriptionCo
     public void fetchSubscriptionsSuccess(List<SubscriptionList.Entity> subscriptionList) {
         mSubscriptionAdapter.setNewData(subscriptionList);
         mSwipeRefreshLayout.setRefreshing(false);
-        mLoadingLayout.showContent();
+        if (subscriptionList == null || subscriptionList.size() == 0) {
+            mLoadingLayout.showEmpty();
+        } else {
+            mLoadingLayout.showContent();
+        }
     }
 
     @Override
