@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         setContentView(R.layout.activity_login);
 
-        if (!TextUtils.isEmpty(AccountPref.getLogonToken(this))) {
+        if (!AccountPref.isLogon(this)) {
             loginSuccess();
         }
 

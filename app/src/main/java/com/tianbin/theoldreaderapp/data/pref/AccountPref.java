@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.tianbin.theoldreaderapp.data.module.TokenInfo;
 
 /**
+ * AccountPref
  * Created by tianbin on 16/7/27.
  */
 public class AccountPref {
@@ -32,15 +33,6 @@ public class AccountPref {
         saveLoginToken(context, "");
     }
 
-    public static void saveLogonUser(Context context, TokenInfo tokenInfo) {
-        String userJson = new Gson().toJson(tokenInfo);
-        getPreference(context).edit().putString(KEY_LOGON_USER, userJson).apply();
-    }
-
-    public static void removeLogonUser(Context context) {
-        getPreference(context).edit().remove(KEY_LOGON_USER).apply();
-    }
-
     public static TokenInfo getLogonUser(Context context) {
         TokenInfo user = null;
         String userJson = getPreference(context).getString(KEY_LOGON_USER, "");
@@ -51,6 +43,6 @@ public class AccountPref {
     }
 
     public static boolean isLogon(Context context) {
-        return !TextUtils.isEmpty(getLogonToken(context)) && getLogonUser(context) != null;
+        return !TextUtils.isEmpty(getLogonToken(context));
     }
 }
