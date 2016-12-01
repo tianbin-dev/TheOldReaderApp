@@ -68,7 +68,9 @@ public abstract class BlogListBasePresenter extends RxPresenter<BlogListContract
                     @Override
                     public void onSuccess(BlogList blogList) {
                         AppLog.d("fetch unread blog success");
-
+                        if (blogList.getItems() == null) {
+                            blogList.setItems(new ArrayList<BlogList.Blog>());
+                        }
                         switch (type) {
                             case INIT:
                                 mView.fetchNewsSuccess(blogList.getItems());

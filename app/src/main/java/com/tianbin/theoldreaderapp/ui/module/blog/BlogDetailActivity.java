@@ -3,6 +3,7 @@ package com.tianbin.theoldreaderapp.ui.module.blog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -43,11 +44,13 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
 
     @Inject
     BlogDetailPresenter mBlogDetailPresenter;
-
-    private int mFromType;
-
+    @BindView(R.id.nested_scroll_view)
+    NestedScrollView mNestedScrollView;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+
+
+    private int mFromType;
 
     private ActionBar mActionBar;
 
@@ -67,6 +70,7 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
     @Override
     protected void webViewLoadPageFinished(WebView view, String url) {
         mActionBar.setTitle(view.getTitle());
+        mNestedScrollView.scrollTo(0, 0);
     }
 
     @Override
@@ -77,6 +81,11 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
     @Override
     protected void webViewStartLoadPage(String url) {
         mActionBar.setTitle("加载中...");
+    }
+
+    @Override
+    protected void webViewOnReceivedTitle(String title) {
+        mActionBar.setTitle(title);
     }
 
     @Override

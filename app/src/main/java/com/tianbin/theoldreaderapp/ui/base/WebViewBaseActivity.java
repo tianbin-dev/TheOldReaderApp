@@ -3,16 +3,20 @@ package com.tianbin.theoldreaderapp.ui.base;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
-import com.tianbin.theoldreaderapp.R;
+import android.widget.ProgressBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.tianbin.theoldreaderapp.R.id.progress_bar;
+import static com.tianbin.theoldreaderapp.R.id.webview;
 
 /**
  * WebViewFragment 基类
@@ -20,8 +24,11 @@ import butterknife.ButterKnife;
  */
 public abstract class WebViewBaseActivity extends AppCompatActivity {
 
-    @BindView(R.id.webview)
+    @BindView(webview)
     protected WebView mWebView;
+    @BindView(progress_bar)
+    protected ProgressBar mProgressBar;
+
 
     private WebViewClient mWebViewClient;
 
@@ -65,6 +72,7 @@ public abstract class WebViewBaseActivity extends AppCompatActivity {
         mWebViewClient = new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl("javascript:document.open();document.close();");
                 view.loadUrl(url);
                 webViewStartLoadPage(url);
                 return true;
@@ -73,7 +81,9 @@ public abstract class WebViewBaseActivity extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                view.scrollTo(0,0);
+                mProgressBar.setProgress(100);
+                mProgressBar.setVisibility(View.GONE);
+
                 webViewLoadPageFinished(view, url);
             }
 
@@ -81,7 +91,7 @@ public abstract class WebViewBaseActivity extends AppCompatActivity {
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
                 mWebView.stopLoading();
-                mWebView.clearView();
+                view.loadUrl("javascript:document.open();document.close();");
 
                 webViewClientReceiveDataError();
             }
@@ -91,6 +101,30 @@ public abstract class WebViewBaseActivity extends AppCompatActivity {
     protected void initWebView() {
         mWebView.setWebViewClient(mWebViewClient);
         // 不设置,无法弹出Alert
+
+        mWebView.setWebChromeClient(new WebChromeClient() {
+
+            @Override
+            public void onReceivedTitle(WebView view, String title) {
+                super.onReceivedTitle(view, title);
+                webViewOnReceivedTitle(title);
+            }
+
+            @Override
+            public void onProgressChanged(WebView view, int progress) {
+                int realProgress = progress;
+
+                if (realProgress < 10) {
+                    realProgress = 10;
+                } else if (realProgress == 100) {
+                    mProgressBar.setVisibility(View.GONE);
+                } else {
+                    mProgressBar.setVisibility(View.VISIBLE);
+                }
+
+                mProgressBar.setProgress(realProgress);
+            }
+        });
 
         WebSettings settings = mWebView.getSettings();
 
@@ -141,7 +175,10 @@ public abstract class WebViewBaseActivity extends AppCompatActivity {
 
     /**
      * web页开始加载回调
+     *
      * @param url
      */
     protected abstract void webViewStartLoadPage(String url);
+
+    protected abstract void webViewOnReceivedTitle(String title);
 }
