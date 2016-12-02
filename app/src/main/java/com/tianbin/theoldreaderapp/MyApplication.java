@@ -3,6 +3,7 @@ package com.tianbin.theoldreaderapp;
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 
+import com.tencent.bugly.crashreport.CrashReport;
 import com.tianbin.theoldreaderapp.di.component.ApplicationComponent;
 import com.tianbin.theoldreaderapp.di.component.DaggerApplicationComponent;
 import com.tianbin.theoldreaderapp.di.module.ApplicationModule;
@@ -19,6 +20,7 @@ public class MyApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
 
+        CrashReport.initCrashReport(getApplicationContext(), "b42b310b0f", true);
     }
 
     public static MyApplication get(Context context) {
