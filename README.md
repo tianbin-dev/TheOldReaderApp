@@ -25,3 +25,16 @@
 所有订阅：展示所有订阅，点击可以查看该订阅的所有文章
 
 我的收藏：展示所有收藏的文章
+
+
+
+## 感谢
+
+**anly_jun：**https://github.com/mingjunli/GithubApp
+
+**googlesamples：**https://github.com/googlesamples/android-architecture
+
+
+
+
+
