@@ -12,7 +12,7 @@
 
 ## 使用到的技术
 
-本项目整体使用MVP架构，同时使用了一些当前比较流行的第三方类库，如RxJava，Butternife，Dragger2，OkHttp，Retrofit等。
+本项目整体使用MVP架构，同时使用了一些当前比较流行的第三方类库，如RxJava，Butternife，Dragger2，OkHttp，Retrofit，BottomNavigationView等。
 
 
 
