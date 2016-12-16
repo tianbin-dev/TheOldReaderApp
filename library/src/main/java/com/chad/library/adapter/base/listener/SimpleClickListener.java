@@ -116,13 +116,9 @@ public abstract class SimpleClickListener implements RecyclerView.OnItemTouchLis
                         View childView = pressedView.findViewById((Integer) it.next());
                         if (inRangeOfView(childView, e) && childView.isEnabled()) {
                             if (childView instanceof ViewGroup) {
-                                View childViewClicked = getChildViewClicked((ViewGroup) childView, e);
-                                if (childViewClicked != null) {
-                                    setPressViewHotSpot(e, childViewClicked);
-                                    childViewClicked.setPressed(true);
-                                    onItemChildClick(baseQuickAdapter, childViewClicked, vh.getLayoutPosition() - baseQuickAdapter.getHeaderLayoutCount());
-                                    resetPressedView(childViewClicked);
-                                    return true;
+                                View viewClicked = getViewClicked((ViewGroup) childView, e);
+                                if (viewClicked != null) {
+                                    childView = viewClicked;
                                 }
                             }
                             setPressViewHotSpot(e, childView);
@@ -157,7 +153,7 @@ public abstract class SimpleClickListener implements RecyclerView.OnItemTouchLis
         }
 
         @Nullable
-        private View getChildViewClicked(ViewGroup childViewGroup, MotionEvent e) {
+        private View getViewClicked(ViewGroup childViewGroup, MotionEvent e) {
             View childViewClicked = null;
             for (int i = 0; i < childViewGroup.getChildCount(); i++) {
                 View child = childViewGroup.getChildAt(i);
@@ -166,7 +162,7 @@ public abstract class SimpleClickListener implements RecyclerView.OnItemTouchLis
                         if (((ViewGroup) child).getChildCount() == 0 && childClickViewIds.contains(child.getId())) {
                             childViewClicked = child;
                         } else {
-                            childViewClicked = getChildViewClicked((ViewGroup) child, e);
+                            childViewClicked = getViewClicked((ViewGroup) child, e);
                         }
                     } else if (childClickViewIds.contains(child.getId())) {
                         childViewClicked = child;

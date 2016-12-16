@@ -14,7 +14,7 @@ import com.tianbin.theoldreaderapp.di.component.MainComponent;
 import com.tianbin.theoldreaderapp.presenter.blog.FavBlogListPresenter;
 import com.tianbin.theoldreaderapp.ui.module.blog.BlogListBaseFragment;
 import com.tianbin.theoldreaderapp.ui.module.blog.SubscriptionBlogListFragment;
-import com.tianbin.theoldreaderapp.ui.module.blog.adapter.LastestBlogListAdapter;
+import com.tianbin.theoldreaderapp.ui.module.blog.adapter.BlogListAdapter;
 
 import javax.inject.Inject;
 
@@ -28,7 +28,7 @@ public class FavouriteFragment extends BlogListBaseFragment {
     FavBlogListPresenter mFavBlogListPresenter;
 
     @Inject
-    LastestBlogListAdapter mLastestBlogListAdapter;
+    BlogListAdapter mBlogListAdapter;
 
     @Override
     public BlogListContract.Presenter getPresenter() {
@@ -37,7 +37,7 @@ public class FavouriteFragment extends BlogListBaseFragment {
 
     @Override
     public BaseQuickAdapter getAdapter() {
-        return mLastestBlogListAdapter;
+        return mBlogListAdapter;
     }
 
     @Override
@@ -45,8 +45,8 @@ public class FavouriteFragment extends BlogListBaseFragment {
         mNewsRecyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
             @Override
             public void onSimpleItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                LastestBlogListAdapter lastestBlogListAdapter = (LastestBlogListAdapter) baseQuickAdapter;
-                BlogList.Blog blog = lastestBlogListAdapter.getData().get(position);
+                BlogListAdapter blogListAdapter = (BlogListAdapter) baseQuickAdapter;
+                BlogList.Blog blog = blogListAdapter.getData().get(position);
 
                 switch (view.getId()){
                     case R.id.tv_origin_title:

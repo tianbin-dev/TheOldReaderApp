@@ -12,10 +12,10 @@ import javax.inject.Inject;
  * LastestBlogListFragment adapter
  * Created by tianbin on 16/11/4.
  */
-public class LastestBlogListAdapter extends BaseQuickAdapter<BlogList.Blog, BaseViewHolder> {
+public class BlogListAdapter extends BaseQuickAdapter<BlogList.Blog, BaseViewHolder> {
 
     @Inject
-    public LastestBlogListAdapter() {
+    public BlogListAdapter() {
         super(R.layout.holder_at_blog, null);
     }
 
