@@ -6,11 +6,14 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
+import com.tianbin.theoldreaderapp.R;
 import com.tianbin.theoldreaderapp.contract.blog.BlogListContract;
 import com.tianbin.theoldreaderapp.data.module.BlogList;
+import com.tianbin.theoldreaderapp.data.module.SubscriptionList;
 import com.tianbin.theoldreaderapp.di.component.MainComponent;
 import com.tianbin.theoldreaderapp.presenter.blog.FavBlogListPresenter;
 import com.tianbin.theoldreaderapp.ui.module.blog.BlogListBaseFragment;
+import com.tianbin.theoldreaderapp.ui.module.blog.SubscriptionBlogListFragment;
 import com.tianbin.theoldreaderapp.ui.module.blog.adapter.LastestBlogListAdapter;
 
 import javax.inject.Inject;
@@ -44,7 +47,18 @@ public class FavouriteFragment extends BlogListBaseFragment {
             public void onSimpleItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 LastestBlogListAdapter lastestBlogListAdapter = (LastestBlogListAdapter) baseQuickAdapter;
                 BlogList.Blog blog = lastestBlogListAdapter.getData().get(position);
-                jumpToBlogDetailFragment(view, blog);
+
+                switch (view.getId()){
+                    case R.id.tv_origin_title:
+                        SubscriptionList.Entity entity = new SubscriptionList.Entity();
+                        entity.setId(blog.getOrigin().getStreamId());
+                        entity.setTitle(blog.getOrigin().getTitle());
+                        SubscriptionBlogListFragment.start(getContext(), entity);
+                        break;
+                    case R.id.ll_blog_holder_root:
+                        jumpToBlogDetailFragment(view, blog);
+                        break;
+                }
             }
         });
     }

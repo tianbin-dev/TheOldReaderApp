@@ -24,6 +24,7 @@ public class LastestBlogListAdapter extends BaseQuickAdapter<BlogList.Blog, Base
         baseViewHolder.setText(R.id.tv_title, blog.getTitle())
                 .setText(R.id.tv_origin_title, blog.getOrigin().getTitle())
                 .setText(R.id.tv_post_time, CalendarUtil.getBlogPostTime(blog.getPublished()))
-                .addOnClickListener(R.id.ll_blog_holder_root);
+                .addOnClickListener(R.id.ll_blog_holder_root)
+                .addOnClickListener(R.id.tv_origin_title);
     }
 }
