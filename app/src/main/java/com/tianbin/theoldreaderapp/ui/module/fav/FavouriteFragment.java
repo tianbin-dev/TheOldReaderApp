@@ -16,7 +16,7 @@ import com.tianbin.theoldreaderapp.ui.module.blog.adapter.LastestBlogListAdapter
 import javax.inject.Inject;
 
 /**
- * fav fragment
+ * FavouriteFragment
  * Created by tianbin on 16/11/4.
  */
 public class FavouriteFragment extends BlogListBaseFragment {
