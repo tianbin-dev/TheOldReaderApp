@@ -3,10 +3,12 @@
       tools:context=".MyActivity">
     <item
         android:id="@+id/action_fav"
-        android:orderInCategory="100"
         android:title="@string/fav"/>
     <item
         android:id="@+id/action_mark_unread"
-        android:orderInCategory="100"
         android:title="@string/mark_as_unread"/>
+    <item
+        android:id="@+id/action_refresh"
+        android:title="@string/refresh"
+        />
 </menu>

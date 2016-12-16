@@ -60,6 +60,10 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
 
     private int mBlogReadStatus = BLOG_READ_STATUS_IDLE;
 
+    private String cancelFavTitleStr;
+    private String cancelStr;
+    private String confirmStr;
+
     public static void start(Context context, BlogList.Blog blog, int fromType) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(BLOG_URL, blog);
@@ -115,6 +119,15 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
         if (!isFaved()) {
             mBlogDetailPresenter.markAsRead(mBlog.getId());
         }
+
+        initStrings();
+    }
+
+    private void initStrings() {
+        cancelFavTitleStr = getString(R.string.cancel_fav_title);
+        cancelStr = getString(R.string.cancel);
+        confirmStr = getString(R.string.confirm);
+
     }
 
     @Override
@@ -172,9 +185,9 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
                     mBlogDetailPresenter.markAsStared(mBlog.getId());
                 } else {
                     new AlertDialog.Builder(this)
-                            .setTitle("确定取消收藏？")
-                            .setNegativeButton("取消", null)
-                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            .setTitle(cancelFavTitleStr)
+                            .setNegativeButton(cancelStr, null)
+                            .setPositiveButton(confirmStr, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     mBlogDetailPresenter.markAsUnstared(mBlog.getId());
@@ -189,6 +202,9 @@ public class BlogDetailActivity extends WebViewBaseActivity implements HasCompon
                 } else {
                     mBlogDetailPresenter.markAsRead(mBlog.getId());
                 }
+                break;
+            case R.id.action_refresh:
+                mWebView.reload();
                 break;
         }
         return super.onOptionsItemSelected(item);
