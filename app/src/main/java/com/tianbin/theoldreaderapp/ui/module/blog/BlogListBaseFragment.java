@@ -6,11 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.FrameLayout.LayoutParams;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.tianbin.theoldreaderapp.R;
@@ -21,10 +17,9 @@ import com.tianbin.theoldreaderapp.ui.base.BaseFragment;
 import java.util.List;
 
 import butterknife.BindView;
-import ezy.ui.layout.LoadingLayout;
 
 /**
- * news fragment
+ * BlogListBaseFragment
  * Created by tianbin on 16/11/3.
  */
 public abstract class BlogListBaseFragment extends BaseFragment implements BlogListContract.View, SwipeRefreshLayout.OnRefreshListener {
@@ -36,8 +31,6 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
 
     private BaseQuickAdapter mBaseQuickAdapter;
     private BlogListContract.Presenter mPresenter;
-
-    private LoadingLayout mLoadingLayout;
 
     @Override
     protected int getLayoutResId() {
@@ -55,37 +48,23 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
         initAdapter();
         initRecyclerView();
 
-        mLoadingLayout = LoadingLayout.wrap(view);
-
-        fetchData();
+        fetchDataAndShowRefreshLayout();
     }
 
-    private void fetchData() {
+    private void fetchDataAndShowRefreshLayout() {
+        mSwipeRefreshLayout.setRefreshing(true);
         mPresenter.fetchBlogs(BlogListContract.FetchType.INIT);
-        mLoadingLayout.showLoading();
     }
 
     private void initAdapter() {
         mBaseQuickAdapter = getAdapter();
+        mBaseQuickAdapter.setAutoLoadMoreSize(20);
         mBaseQuickAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
                 mPresenter.fetchBlogs(BlogListContract.FetchType.LOAD_MORE);
             }
         });
-        addLoadingView();
-    }
-
-    private void addLoadingView() {
-        TextView textView = new TextView(getContext());
-        textView.setText("loading ...");
-        textView.setTextSize(14);
-        textView.setTextColor(getResources().getColor(R.color.colorAccent));
-        textView.setGravity(Gravity.CENTER);
-        int viewHeight = getResources().getDimensionPixelSize(R.dimen.loading_view_height);
-        LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, viewHeight);
-        textView.setLayoutParams(layoutParams);
-        //mBaseQuickAdapter.setLoadMoreView(textView);
     }
 
     private void initRecyclerView() {
@@ -113,12 +92,11 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
             mBaseQuickAdapter.setNewData(blogList);
             mBaseQuickAdapter.notifyDataSetChanged();
         }
-        if (blogList.size() == 0) {
-            mLoadingLayout.showEmpty();
+        if (blogList != null && blogList.size() > 0) {
+            mBaseQuickAdapter.loadMoreComplete();
         } else {
-            mLoadingLayout.showContent();
+            mBaseQuickAdapter.loadMoreEnd();
         }
-
         dismissSwipeRefreshLayout();
     }
 
@@ -133,7 +111,7 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
 
     @Override
     public void fetchNewsFailed(Throwable throwable) {
-        mLoadingLayout.showError();
+        mBaseQuickAdapter.loadMoreFail();
         dismissSwipeRefreshLayout();
     }
 
@@ -141,19 +119,20 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
     public void loadMoreNewsSuccess(List<BlogList.Blog> blogList) {
         if (mBaseQuickAdapter != null) {
             mBaseQuickAdapter.addData(blogList);
+            mBaseQuickAdapter.loadMoreComplete();
         }
     }
 
     @Override
     public void loadMoreNewsCompleted() {
-        //mBaseQuickAdapter.loadComplete();
-        Toast.makeText(getContext(), "no more data", Toast.LENGTH_LONG).show();
+        mBaseQuickAdapter.loadMoreEnd();
     }
 
     @Override
     public void pullDownRefreshSuccess() {
         if (mBaseQuickAdapter != null) {
             mBaseQuickAdapter.notifyDataSetChanged();
+            mBaseQuickAdapter.loadMoreComplete();
         }
         dismissSwipeRefreshLayout();
     }

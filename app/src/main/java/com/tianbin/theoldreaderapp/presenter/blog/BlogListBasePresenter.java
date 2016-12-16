@@ -53,7 +53,7 @@ public abstract class BlogListBasePresenter extends RxPresenter<BlogListContract
                     @Override
                     public List<String> call(BlogIdItemList blogIdItemList) {
                         mContinuation = blogIdItemList.getContinuation();
-                        AppLog.d(String.valueOf(mContinuation));
+                        AppLog.e(String.valueOf(mContinuation));
                         return getBlogIdList(blogIdItemList);
                     }
                 })

@@ -96,7 +96,7 @@ dependencies {
     compile 'jp.wasabeef:recyclerview-animators:1.2.2'
 
     // https://github.com/czy1121/loadinglayout
-    compile 'com.github.czy1121:loadinglayout:1.0.0'
+//    compile 'com.github.czy1121:loadinglayout:1.0.0'
 
     // https://bugly.qq.com/v2/sdkDownload
     compile 'com.tencent.bugly:crashreport:latest.release'

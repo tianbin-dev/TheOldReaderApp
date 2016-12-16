@@ -28,7 +28,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ezy.ui.layout.LoadingLayout;
 
 /**
  * SubscriptionFragment
@@ -40,8 +39,6 @@ public class SubscriptionFragment extends BaseFragment implements SubscriptionCo
     RecyclerView mRecyclerView;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
-
-    private LoadingLayout mLoadingLayout;
 
     @Inject
     SubscriptionPresenter mSubscriptionPresenter;
@@ -70,14 +67,12 @@ public class SubscriptionFragment extends BaseFragment implements SubscriptionCo
 
         mSubscriptionPresenter.attachView(this);
 
-        mLoadingLayout = LoadingLayout.wrap(view);
-
-        fetchData();
+        fetchDataAndShowRefreshLayout();
     }
 
-    private void fetchData() {
+    private void fetchDataAndShowRefreshLayout() {
+        mSwipeRefreshLayout.setRefreshing(true);
         mSubscriptionPresenter.fetchSubscriptions();
-        mLoadingLayout.showLoading();
     }
 
     private void initRecyclerView() {
@@ -103,10 +98,10 @@ public class SubscriptionFragment extends BaseFragment implements SubscriptionCo
     public void fetchSubscriptionsSuccess(List<SubscriptionList.Entity> subscriptionList) {
         mSubscriptionAdapter.setNewData(subscriptionList);
         mSwipeRefreshLayout.setRefreshing(false);
-        if (subscriptionList == null || subscriptionList.size() == 0) {
-            mLoadingLayout.showEmpty();
-        } else {
-            mLoadingLayout.showContent();
+        if(subscriptionList != null && subscriptionList.size() > 0){
+            mSubscriptionAdapter.loadMoreComplete();
+        }else{
+            mSubscriptionAdapter.loadMoreEnd(true);
         }
     }
 
@@ -114,7 +109,7 @@ public class SubscriptionFragment extends BaseFragment implements SubscriptionCo
     public void fetchSubscriptionsFail() {
         Toast.makeText(getContext(), "数据加载失败", Toast.LENGTH_LONG).show();
         mSwipeRefreshLayout.setRefreshing(false);
-        mLoadingLayout.showError();
+        mSubscriptionAdapter.loadMoreFail();
     }
 
     @Override
