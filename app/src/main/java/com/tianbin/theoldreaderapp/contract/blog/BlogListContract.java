@@ -14,13 +14,13 @@ public interface BlogListContract {
 
     interface View extends MvpView {
 
-        void fetchNewsSuccess(List<BlogList.Blog> blogList);
+        void fetchBlogsSuccess(List<BlogList.Blog> blogList);
 
-        void fetchNewsFailed(Throwable throwable);
+        void fetchBlogsFailed(Throwable throwable);
 
-        void loadMoreNewsSuccess(List<BlogList.Blog> blogList);
+        void loadMoreBlogsSuccess(List<BlogList.Blog> blogList);
 
-        void loadMoreNewsCompleted();
+        void loadMoreBlogsCompleted();
 
         void pullDownRefreshSuccess();
 

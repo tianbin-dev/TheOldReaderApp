@@ -9,7 +9,7 @@ import com.tianbin.theoldreaderapp.di.component.DaggerApplicationComponent;
 import com.tianbin.theoldreaderapp.di.module.ApplicationModule;
 
 /**
- * application
+ * MyApplication
  * Created by tianbin on 16/11/3.
  */
 public class MyApplication extends MultiDexApplication {

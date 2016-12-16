@@ -73,7 +73,7 @@ public abstract class BlogListBasePresenter extends RxPresenter<BlogListContract
                         }
                         switch (type) {
                             case INIT:
-                                mView.fetchNewsSuccess(blogList.getItems());
+                                mView.fetchBlogsSuccess(blogList.getItems());
                                 break;
                             case REFRESH:
                                 appendNewData(blogList);
@@ -82,9 +82,9 @@ public abstract class BlogListBasePresenter extends RxPresenter<BlogListContract
                             case LOAD_MORE:
                                 AppLog.e("continuation --- " + mContinuation);
                                 if (mContinuation != 0) {
-                                    mView.loadMoreNewsSuccess(blogList.getItems());
+                                    mView.loadMoreBlogsSuccess(blogList.getItems());
                                 } else {
-                                    mView.loadMoreNewsCompleted();
+                                    mView.loadMoreBlogsCompleted();
                                 }
                                 break;
                         }
@@ -93,7 +93,7 @@ public abstract class BlogListBasePresenter extends RxPresenter<BlogListContract
                     @Override
                     public void onError(Throwable e) {
                         AppLog.d(e.toString());
-                        mView.fetchNewsFailed(e);
+                        mView.fetchBlogsFailed(e);
                     }
                 });
 

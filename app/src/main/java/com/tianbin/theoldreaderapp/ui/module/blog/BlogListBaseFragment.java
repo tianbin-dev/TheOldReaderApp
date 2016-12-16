@@ -87,7 +87,7 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
     }
 
     @Override
-    public void fetchNewsSuccess(List<BlogList.Blog> blogList) {
+    public void fetchBlogsSuccess(List<BlogList.Blog> blogList) {
         if (mBaseQuickAdapter != null) {
             mBaseQuickAdapter.setNewData(blogList);
             mBaseQuickAdapter.notifyDataSetChanged();
@@ -110,13 +110,13 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
     }
 
     @Override
-    public void fetchNewsFailed(Throwable throwable) {
+    public void fetchBlogsFailed(Throwable throwable) {
         mBaseQuickAdapter.loadMoreFail();
         dismissSwipeRefreshLayout();
     }
 
     @Override
-    public void loadMoreNewsSuccess(List<BlogList.Blog> blogList) {
+    public void loadMoreBlogsSuccess(List<BlogList.Blog> blogList) {
         if (mBaseQuickAdapter != null) {
             mBaseQuickAdapter.addData(blogList);
             mBaseQuickAdapter.loadMoreComplete();
@@ -124,7 +124,7 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
     }
 
     @Override
-    public void loadMoreNewsCompleted() {
+    public void loadMoreBlogsCompleted() {
         mBaseQuickAdapter.loadMoreEnd();
     }
 
