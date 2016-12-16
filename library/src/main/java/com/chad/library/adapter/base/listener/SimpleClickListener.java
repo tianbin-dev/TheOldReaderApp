@@ -116,10 +116,7 @@ public abstract class SimpleClickListener implements RecyclerView.OnItemTouchLis
                         View childView = pressedView.findViewById((Integer) it.next());
                         if (inRangeOfView(childView, e) && childView.isEnabled()) {
                             if (childView instanceof ViewGroup) {
-                                View viewClicked = getViewClicked((ViewGroup) childView, e);
-                                if (viewClicked != null) {
-                                    childView = viewClicked;
-                                }
+                                childView = getViewClicked((ViewGroup) childView, e);
                             }
                             setPressViewHotSpot(e, childView);
                             childView.setPressed(true);
