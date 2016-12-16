@@ -67,7 +67,6 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
 
     private void initAdapter() {
         mBaseQuickAdapter = getAdapter();
-        mBaseQuickAdapter.openLoadMore(20);
         mBaseQuickAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
@@ -86,7 +85,7 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
         int viewHeight = getResources().getDimensionPixelSize(R.dimen.loading_view_height);
         LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, viewHeight);
         textView.setLayoutParams(layoutParams);
-        mBaseQuickAdapter.setLoadingView(textView);
+        //mBaseQuickAdapter.setLoadMoreView(textView);
     }
 
     private void initRecyclerView() {
@@ -147,7 +146,7 @@ public abstract class BlogListBaseFragment extends BaseFragment implements BlogL
 
     @Override
     public void loadMoreNewsCompleted() {
-        mBaseQuickAdapter.loadComplete();
+        //mBaseQuickAdapter.loadComplete();
         Toast.makeText(getContext(), "no more data", Toast.LENGTH_LONG).show();
     }
 

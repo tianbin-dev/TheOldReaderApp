@@ -91,7 +91,7 @@ public class SubscriptionFragment extends BaseFragment implements SubscriptionCo
 
         mRecyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
             @Override
-            public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int position) {
+            public void onSimpleItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 SubscriptionAdapter subscriptionAdapter = (SubscriptionAdapter) baseQuickAdapter;
                 SubscriptionList.Entity entity = subscriptionAdapter.getData().get(position);
                 SubscriptionBlogListFragment.start(getContext(), entity);

@@ -11,7 +11,7 @@ import javax.inject.Inject;
  * SubscriptionBlogFrament adapter
  * Created by tianbin on 16/11/4.
  */
-public class SubscriptionBlogListAdapter extends BaseQuickAdapter<BlogList.Blog> {
+public class SubscriptionBlogListAdapter extends BaseQuickAdapter<BlogList.Blog, BaseViewHolder> {
 
     @Inject
     public SubscriptionBlogListAdapter() {

@@ -40,7 +40,7 @@ public class LastestBlogListFragment extends BlogListBaseFragment {
     public void addItemClickListener() {
         mNewsRecyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
             @Override
-            public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int position) {
+            public void onSimpleItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 LastestBlogListAdapter lastestBlogListAdapter = (LastestBlogListAdapter) baseQuickAdapter;
                 BlogList.Blog blog = lastestBlogListAdapter.getData().get(position);
                 jumpToBlogDetailFragment(view, blog);

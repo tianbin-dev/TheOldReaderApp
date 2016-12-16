@@ -55,7 +55,7 @@ public class SubscriptionBlogListFragment extends BlogListBaseFragment {
     public void addItemClickListener() {
         mNewsRecyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
             @Override
-            public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int position) {
+            public void onSimpleItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 SubscriptionBlogListAdapter subscriptionBlogListAdapter = (SubscriptionBlogListAdapter) baseQuickAdapter;
                 BlogList.Blog blog = subscriptionBlogListAdapter.getData().get(position);
                 jumpToBlogDetailFragment(view, blog);

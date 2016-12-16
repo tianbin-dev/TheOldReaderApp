@@ -12,7 +12,7 @@ import javax.inject.Inject;
  * Created by tianbin on 16/11/12.
  */
 
-public class SubscriptionAdapter extends BaseQuickAdapter<SubscriptionList.Entity> {
+public class SubscriptionAdapter extends BaseQuickAdapter<SubscriptionList.Entity, BaseViewHolder> {
 
     @Inject
     public SubscriptionAdapter() {
