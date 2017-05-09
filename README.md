@@ -30,9 +30,9 @@
 
 ## 感谢
 
-**anly_jun：**https://github.com/mingjunli/GithubApp
+anly_jun：https://github.com/mingjunli/GithubApp
 
-**googlesamples：**https://github.com/googlesamples/android-architecture
+googlesamples：https://github.com/googlesamples/android-architecture
 
 
 
